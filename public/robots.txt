@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://opi.codes/sitemap.xml
