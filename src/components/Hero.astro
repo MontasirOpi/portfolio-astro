@@ -6,15 +6,15 @@ const p = PROFILE;
 <section class="hero" id="top">
   <div class="container hero-grid reveal">
     <div class="hero-text">
-      <p class="eyebrow">// Hello world, I&rsquo;m</p>
-      <h1 class="display">{p.name}</h1>
-      <p class="role">{p.title}</p>
-      <p class="lede">{p.heroIntro}</p>
-      <div class="cta"><a href="#projects" class="btn btn-primary">View Projects <Icon name="arrow" /></a><a href={p.cvUrl} target="_blank" rel="noopener" class="btn btn-ghost">View CV</a><a href="#contact" class="btn btn-ghost">Contact</a></div>
-      <div class="socials"><a href={p.github} target="_blank" rel="noopener" aria-label="GitHub profile"><Icon name="github" /> GitHub</a><a href={p.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn profile"><Icon name="linkedin" /> LinkedIn</a><span class="loc"><Icon name="pin" /> {p.location}</span></div>
-      <div class="meta"><span><strong>Focus</strong> OTA &middot; Flutter &middot; Node.js</span><span><strong>Currently</strong> Associate Software Engineer</span></div>
+      <p class="eyebrow hero-anim">// Hello world, I&rsquo;m</p>
+      <h1 class="display hero-anim hero-name"><span class="name-underline">{p.name}</span></h1>
+      <p class="role hero-anim">{p.title}</p>
+      <p class="lede hero-anim">{p.heroIntro}</p>
+      <div class="cta hero-anim"><a href="#projects" class="btn btn-primary">View Projects <Icon name="arrow" /></a><a href={p.cvUrl} target="_blank" rel="noopener" class="btn btn-ghost">View CV</a><a href="#contact" class="btn btn-ghost">Contact</a></div>
+      <div class="socials hero-anim"><a href={p.github} target="_blank" rel="noopener" aria-label="GitHub profile"><Icon name="github" /> GitHub</a><a href={p.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn profile"><Icon name="linkedin" /> LinkedIn</a><span class="loc"><Icon name="pin" /> {p.location}</span></div>
+      <div class="meta hero-anim"><span><strong>Focus</strong> OTA &middot; Flutter &middot; Node.js</span><span><strong>Currently</strong> Associate Software Engineer</span></div>
     </div>
-    <aside class="visual" aria-label="Profile photo">
+    <aside class="visual hero-anim hero-visual" aria-label="Profile photo">
       <div class="photo-wrap"><img src={p.profileImage} alt="Portrait of Fahim Montasir Opi" width="520" height="520" fetchpriority="high" /></div>
       <div class="card"><p class="card-label">Currently building</p><p class="card-title">OTA travel platforms</p><p class="card-sub">Flights &middot; Hotels &middot; Transfers &middot; eSIM &middot; Insurance</p></div>
     </aside>
@@ -40,4 +40,21 @@ const p = PROFILE;
   .card-label{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-3);margin:0 0 0.3rem}
   .card-title{font-weight:700;margin:0}
   .card-sub{margin:0.25rem 0 0;color:var(--text-2);font-size:0.88rem}
+  /* Staggered hero entrance + name underline draw — fast, no parallax/blobs. */
+  .hero-anim{animation:heroIn 0.5s var(--ease) both}
+  .hero-text .hero-anim:nth-child(1){animation-delay:0ms}
+  .hero-text .hero-anim:nth-child(2){animation-delay:70ms}
+  .hero-text .hero-anim:nth-child(3){animation-delay:140ms}
+  .hero-text .hero-anim:nth-child(4){animation-delay:210ms}
+  .hero-text .hero-anim:nth-child(5){animation-delay:280ms}
+  .hero-text .hero-anim:nth-child(6){animation-delay:340ms}
+  .hero-text .hero-anim:nth-child(7){animation-delay:400ms}
+  .hero-visual{animation-delay:200ms}
+  @keyframes heroIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .name-underline{position:relative;display:inline-block}
+  .name-underline::after{content:"";position:absolute;left:0;right:0;bottom:0.06em;height:0.09em;background:linear-gradient(90deg,var(--accent),var(--accent-strong));background-size:200% 100%;border-radius:2px;transform-origin:left;animation:drawLine 0.6s var(--ease) 0.45s both,accentShift 6s ease-in-out 1.2s infinite alternate}
+  @keyframes drawLine{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes accentShift{from{background-position:0% 0}to{background-position:100% 0}}
+  .card{transition:transform 0.3s var(--ease),box-shadow 0.3s var(--ease)}
+  .visual:hover .card{transform:translateY(-3px)}
 </style>

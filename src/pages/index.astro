@@ -35,3 +35,16 @@ import Footer from '../components/Footer.astro';
   </main>
   <Footer />
 </BaseLayout>
+<script>
+  // Scroll reveal: fade + rise once, staggered via --d. Respects reduced-motion via CSS.
+  if (typeof IntersectionObserver !== 'undefined') {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
+      }
+    }, { threshold: 0.12, rootMargin: '0px 0px -4% 0px' });
+    document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+  } else {
+    document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('in-view'));
+  }
+</script>

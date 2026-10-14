@@ -3,29 +3,34 @@ import { PROJECTS, initials } from '../data/portfolio';
 import SectionHeading from './SectionHeading.astro';
 import Icon from './Icon.astro';
 const filters = ['All', 'Mobile', 'Package', 'Web'] as const;
+const counts = { All: PROJECTS.length, Mobile: PROJECTS.filter((p) => p.category === 'Mobile').length, Package: PROJECTS.filter((p) => p.category === 'Package').length, Web: PROJECTS.filter((p) => p.category === 'Web').length };
 ---
 <section class="section" id="projects">
   <div class="container">
     <SectionHeading eyebrow="Featured projects" title="Real work, real links" subtitle="12 projects from my portfolio. Production travel apps link to their store listings. Open-source work links to GitHub and pub.dev. No invented metrics." />
-    <div class="filters" role="group" aria-label="Filter projects by category">
-      {filters.map((f) => <button type="button" data-filter={f} aria-pressed={f === 'All' ? 'true' : 'false'} class={f === 'All' ? 'active' : ''}>{f}</button>)}
+    <div class="filter-row" data-reveal>
+      <div class="filters" role="group" aria-label="Filter projects by category">
+        {filters.map((f) => <button type="button" data-filter={f} aria-pressed={f === 'All' ? 'true' : 'false'} class={f === 'All' ? 'active' : ''}>{f} <span class="f-count">{counts[f]}</span></button>)}
+      </div>
+      <p class="count" aria-live="polite" id="project-count">Showing {PROJECTS.length} of {PROJECTS.length} projects</p>
     </div>
-    <p class="count" aria-live="polite" id="project-count">Showing {PROJECTS.length} of {PROJECTS.length} projects</p>
     <div class="list" id="project-list">
       {PROJECTS.map((p, idx) => (
-        <article class:list={['proj', { featured: idx < 3 }]} data-category={p.category} data-slug={p.slug}>
+        <article class="proj" data-category={p.category} data-slug={p.slug} data-reveal style={`--d:${(idx % 3) * 60}ms`}>
           <div class="visual">
             {p.image ? <img src={p.image} alt={p.imageAlt || p.name} loading="lazy" width="640" height="400" /> : p.networkImage ? <img src={p.networkImage} alt={p.imageAlt || p.name} loading="lazy" width="640" height="400" /> : <div class="placeholder" aria-hidden="true"><span>{initials(p.name)}</span><small>{p.category}</small></div>}
+            <span class="idx" aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
+            <span class="cat-badge">{p.category}</span>
           </div>
           <div class="body">
-            <div class="top"><span class="cat">{p.category}</span>{p.role && <span class="role">{p.role}</span>}</div>
-            <h3>{p.name}</h3>
-            <p>{p.description}</p>
+            <div class="top">{p.role && <span class="role">{p.role}</span>}</div>
+            <h3><a href={p.github || p.liveDemo || p.playStore || p.appStore || p.pubDev || '#projects'} target={p.github || p.liveDemo || p.playStore || p.appStore || p.pubDev ? '_blank' : undefined} rel="noopener">{p.name}</a></h3>
+            <p class="desc">{p.description}</p>
             <ul class="features">{p.features.map((f) => <li>{f}</li>)}</ul>
             <div class="chips">{p.technologies.map((t) => <span class="chip">{t}</span>)}</div>
             <div class="links">
-              {p.github && <a href={p.github} target="_blank" rel="noopener"><Icon name="github" /> GitHub</a>}
-              {p.liveDemo && <a href={p.liveDemo} target="_blank" rel="noopener"><Icon name="external" /> Live Demo</a>}
+              {p.github && <a href={p.github} target="_blank" rel="noopener"><Icon name="github" /> Code</a>}
+              {p.liveDemo && <a href={p.liveDemo} target="_blank" rel="noopener"><Icon name="external" /> Live</a>}
               {p.pubDev && <a href={p.pubDev} target="_blank" rel="noopener"><Icon name="external" /> Pub.dev</a>}
               {p.playStore && <a href={p.playStore} target="_blank" rel="noopener"><Icon name="external" /> Play Store</a>}
               {p.appStore && <a href={p.appStore} target="_blank" rel="noopener"><Icon name="external" /> App Store</a>}
@@ -37,30 +42,47 @@ const filters = ['All', 'Mobile', 'Package', 'Web'] as const;
   </div>
 </section>
 <style>
-  .filters{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem}
-  .filters button{padding:0.55rem 1rem;border:1px solid var(--border);background:var(--surface);border-radius:999px;cursor:pointer;font-weight:600}
-  .filters button.active{background:var(--text);color:var(--bg);border-color:var(--text)}
-  .count{color:var(--text-3);font-size:0.9rem;margin:0 0 1.5rem}
-  .list{display:grid;gap:1.25rem}
-  .proj{display:grid;gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--surface)}
-  @media(min-width:860px){.proj{grid-template-columns:0.9fr 1.1fr} .proj.featured{grid-template-columns:1fr 1fr}}
-  .visual{background:var(--surface-2);min-height:220px;display:grid;place-items:center;overflow:hidden}
-  .visual img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:8/5}
-  .placeholder{display:grid;place-items:center;text-align:center;gap:0.25rem;color:var(--text-2)}
-  .placeholder span{font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--text)}
-  .body{padding:1.5rem}
-  @media(min-width:860px){.body{padding:2rem}}
-  .top{display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;margin-bottom:0.7rem}
-  .cat{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);font-weight:600}
-  .role{font-size:0.82rem;color:var(--text-3)}
-  h3{margin:0 0 0.6rem;font-family:var(--font-display);font-size:1.35rem}
-  .body > p{color:var(--text-2);margin:0 0 1rem}
-  .features{margin:0 0 1.1rem;padding-left:1.15rem;color:var(--text-2)}
-  .features li{margin-bottom:0.35rem}
-  .chips{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.15rem}
-  .links{display:flex;flex-wrap:wrap;gap:1rem}
-  .links a{display:inline-flex;gap:0.4rem;align-items:center;font-weight:600;text-decoration:none;font-size:0.9rem}
-  .links a:hover{text-decoration:underline}
+  .filter-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0.75rem 1rem;margin-bottom:1.25rem}
+  .filters{display:flex;flex-wrap:wrap;gap:0.4rem;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:0.3rem}
+  .filters button{display:inline-flex;align-items:center;gap:0.4rem;padding:0.42rem 0.85rem;border:0;background:transparent;border-radius:999px;cursor:pointer;font-weight:600;font-size:0.86rem;color:var(--text-2);transition:background var(--dur) var(--ease),color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
+  .filters button:hover{color:var(--text)}
+  .filters button.active{background:var(--text);color:var(--bg);box-shadow:var(--shadow-sm)}
+  .f-count{display:grid;place-items:center;min-width:1.25rem;height:1.25rem;padding:0 0.3rem;border-radius:999px;background:color-mix(in srgb, var(--text) 10%, transparent);font-family:var(--font-mono);font-size:0.68rem;font-weight:600}
+  .filters button.active .f-count{background:color-mix(in srgb, var(--bg) 22%, transparent)}
+  .count{color:var(--text-3);font-size:0.85rem;margin:0}
+  .list{display:grid;gap:1rem;grid-template-columns:1fr}
+  @media(min-width:700px){.list{grid-template-columns:repeat(2,1fr)}}
+  @media(min-width:1100px){.list{grid-template-columns:repeat(3,1fr);gap:1.1rem}}
+  .proj{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow-sm);transition:transform 0.28s var(--ease),box-shadow 0.28s var(--ease),border-color 0.28s var(--ease),opacity 0.25s ease}
+  .proj:hover{transform:translateY(-4px);border-color:var(--border-strong);box-shadow:var(--shadow-md)}
+  .proj.is-out{opacity:0;transform:scale(0.97) translateY(4px)}
+  .proj.is-in{animation:cardIn 0.35s var(--ease) both}
+  @keyframes cardIn{from{opacity:0;transform:scale(0.98) translateY(6px)}to{opacity:1;transform:none}}
+  .visual{position:relative;background:var(--surface-2);aspect-ratio:16/10;overflow:hidden;flex:none}
+  .visual img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.45s var(--ease)}
+  .proj:hover .visual img{transform:scale(1.05)}
+  .placeholder{display:grid;place-items:center;align-content:center;gap:0.25rem;height:100%;color:var(--text-2)}
+  .placeholder span{font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--text)}
+  .placeholder small{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase}
+  .idx{position:absolute;top:0.6rem;left:0.6rem;font-family:var(--font-mono);font-size:0.68rem;font-weight:600;background:color-mix(in srgb, var(--bg) 92%, transparent);border:1px solid var(--border);border-radius:999px;padding:0.2rem 0.5rem;backdrop-filter:blur(4px)}
+  .cat-badge{position:absolute;top:0.6rem;right:0.6rem;font-family:var(--font-mono);font-size:0.65rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;background:var(--text);color:var(--bg);border-radius:999px;padding:0.25rem 0.55rem}
+  .body{padding:0.95rem 1rem 1rem;display:flex;flex-direction:column;flex:1}
+  .top{min-height:1.1rem;margin-bottom:0.35rem}
+  .role{font-family:var(--font-mono);font-size:0.68rem;letter-spacing:0.04em;color:var(--accent);font-weight:600;text-transform:uppercase}
+  h3{margin:0 0 0.4rem;font-family:var(--font-display);font-size:1.08rem;line-height:1.25}
+  h3 a{text-decoration:none}
+  h3 a:hover{color:var(--accent)}
+  .desc{color:var(--text-2);font-size:0.88rem;line-height:1.55;margin:0 0 0.6rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .features{margin:0 0 0.7rem;padding-left:1rem;color:var(--text-2);font-size:0.82rem;line-height:1.5}
+  .features li{margin-bottom:0.25rem}
+  .features li::marker{color:var(--accent)}
+  .chips{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.85rem;margin-top:auto}
+  .chips .chip{font-size:0.7rem;padding:0.2rem 0.5rem}
+  .links{display:flex;flex-wrap:wrap;gap:0.5rem 1rem;padding-top:0.75rem;border-top:1px solid var(--border)}
+  .links a{display:inline-flex;gap:0.35rem;align-items:center;font-weight:600;text-decoration:none;font-size:0.82rem;transition:color var(--dur),gap var(--dur)}
+  .links a:hover{color:var(--accent)}
+  .links a:hover .icon{transform:translate(1px,-1px)}
+  .links .icon{transition:transform var(--dur) var(--ease)}
 </style>
 <script>
   const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
@@ -72,8 +94,14 @@ const filters = ['All', 'Mobile', 'Package', 'Web'] as const;
     let shown = 0;
     cards.forEach((card) => {
       const visible = filter === 'All' || card.dataset.category === filter;
-      card.hidden = !visible;
       if (visible) shown++;
+      // Animate out, then swap visibility, then animate in — no layout jump.
+      card.classList.add('is-out');
+      window.setTimeout(() => {
+        card.hidden = !visible;
+        card.classList.remove('is-out');
+        if (visible) { card.classList.remove('is-in'); void card.offsetWidth; card.classList.add('is-in'); }
+      }, 140);
     });
     if (count) count.textContent = `Showing ${shown} of ${cards.length} projects`;
   }));

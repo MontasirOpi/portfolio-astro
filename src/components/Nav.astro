@@ -22,8 +22,11 @@ import Icon from './Icon.astro';
   .brand-name{font-family:var(--font-display);font-size:0.95rem}
   @media(max-width:860px){.brand-name{display:none}}
   .desktop ul{display:flex;gap:1.6rem;list-style:none;margin:0;padding:0}
-  .desktop a{text-decoration:none;color:var(--text-2);font-size:0.92rem;font-weight:500}
+  .desktop a{position:relative;text-decoration:none;color:var(--text-2);font-size:0.92rem;font-weight:500;padding-bottom:0.2rem;transition:color var(--dur) var(--ease)}
+  .desktop a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--accent);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform 0.28s var(--ease)}
   .desktop a:hover{color:var(--text)}
+  .desktop a:hover::after,.desktop a[aria-current="true"]::after{transform:scaleX(1)}
+  .desktop a[aria-current="true"]{color:var(--text)}
   @media(max-width:860px){.desktop{display:none}}
   .actions{display:flex;gap:0.5rem;align-items:center}
   .icon-btn{display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--border);background:var(--surface);border-radius:8px;cursor:pointer;color:var(--text)}
@@ -61,6 +64,18 @@ import Icon from './Icon.astro';
     if (openIcon) openIcon.hidden = open;
     if (closeIcon) closeIcon.hidden = !open;
   });
+  // Active section indicator (desktop nav) — IntersectionObserver, no scroll hijack.
+  const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.desktop a'));
+  const sectionIds = ['about', 'skills', 'projects', 'experience', 'contact'];
+  if (typeof IntersectionObserver !== 'undefined') {
+    const navObserver = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        navLinks.forEach((a) => { const on = a.getAttribute('href') === '#' + e.target.id; a.toggleAttribute('aria-current', on); });
+      }
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sectionIds.forEach((id) => { const el = document.getElementById(id); if (el) navObserver.observe(el); });
+  }
   menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
     if (menu) menu.hidden = true;
     menuBtn?.setAttribute('aria-expanded', 'false');

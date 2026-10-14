@@ -30,6 +30,14 @@ Astro conversion of the Angular portfolio, same content + design:
 - Content checks on `dist/index.html`: all 12 project names, both employers, all side-nav labels, `sidenav-dot`, `data-filter`, JSON-LD, skip link — present
 - No invented content: the only "certification" match is the honest omission note ("not listed in the source portfolio, so they are omitted here rather than invented"). No Antigravity/OpenCode claims.
 
+## Update 2026-10-14 — Projects redesign + tasteful animations (local only, not yet pushed/deployed)
+
+- **Projects redesigned (compact):** vertical cards, 3 cols ≥1100px / 2 cols tablet / 1 col mobile; image fixed 16/10 aspect; padding 0.95rem/1rem; title 1.08rem; description 2-line clamped; features 0.82rem tight; chips 0.7rem; links row with top border. Index number 01–12 + category badge overlaid on image. No content changed — all 12 projects, same names/descriptions/features/tech/links.
+- **Filter bar:** compact pill group with counts (All 12 / Mobile 10 / Package 1 / Web 1), active = dark pill; filtering animates (fade/scale out → swap → fade/scale in, 140ms) with no layout jump.
+- **Hover:** card lifts −4px + border + shadow; image zooms 1.05×; link icon nudges. No neon/glow/glassmorphism.
+- **Animations (all <500ms, reduced-motion collapses):** scroll reveal via IntersectionObserver (fade+rise, once, staggered for project cards via `--d`); hero staggered entrance + name underline draw + slow accent gradient shift only; nav underline grow + active-section indicator via IntersectionObserver; buttons lift on hover; SideNav active-label transition smoothed to 300ms ease.
+- **Validation (this update):** `npm run build` PASS (1 page, 2.78s); `dist/index.html` 67K, CSS 25K; all 12 project names + `data-filter` + reveal/hero classes present. Angular project untouched.
+
 ## Not done (by design)
 
 - No GitHub repo created, no deploy. Local build only.
