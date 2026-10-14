@@ -1,0 +1,21 @@
+---
+import { PROFILE, NAV_LINKS } from '../data/portfolio';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container foot">
+    <div><a href="#top" class="brand">OPI — {PROFILE.name}</a><p>© {year} {PROFILE.name}. All rights reserved.</p></div>
+    <nav aria-label="Footer"><ul>{NAV_LINKS.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul></nav>
+    <div class="socials"><a href={PROFILE.github} target="_blank" rel="noopener">GitHub</a><a href={PROFILE.linkedin} target="_blank" rel="noopener">LinkedIn</a><a href={`mailto:${PROFILE.email}`}>Email</a></div>
+  </div>
+</footer>
+<style>
+  .footer{border-top:1px solid var(--border);padding-block:2rem}
+  .foot{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between;align-items:flex-start}
+  .brand{font-family:var(--font-display);font-weight:700;text-decoration:none}
+  .foot p{margin:0.4rem 0 0;color:var(--text-3);font-size:0.9rem}
+  ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:1rem}
+  a{text-decoration:none;color:var(--text-2)}
+  a:hover{color:var(--text);text-decoration:underline}
+  .socials{display:flex;gap:1rem}
+</style>
