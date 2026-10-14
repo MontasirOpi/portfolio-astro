@@ -1,0 +1,56 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title = 'Fahim Montasir Opi — Associate Software Engineer', description = 'Fahim Montasir Opi — Associate Software Engineer in Dhaka. Flutter mobile apps, Node.js & TypeScript backends, OTA travel systems, and AI-assisted engineering.' } = Astro.props;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Fahim Montasir Opi',
+  jobTitle: 'Associate Software Engineer',
+  url: 'https://opi.codes/',
+  email: 'devmontasir@gmail.com',
+  address: { '@type': 'PostalAddress', addressLocality: 'Dhaka', addressCountry: 'BD' },
+  sameAs: ['https://github.com/MontasirOpi', 'https://www.linkedin.com/in/montasir-opi'],
+};
+---
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href="https://opi.codes/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://opi.codes/" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content="Flutter mobile apps, OTA travel platforms, Node.js backends, and AI-assisted engineering." />
+  <meta property="og:image" content="https://opi.codes/assets/images/profile.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content="Flutter mobile apps, OTA travel platforms, Node.js backends, and AI-assisted engineering." />
+  <meta name="twitter:image" content="https://opi.codes/assets/images/profile.webp" />
+  <meta name="author" content="Fahim Montasir Opi" />
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+  <script is:inline>
+    // Apply saved theme before paint to avoid a flash.
+    try {
+      var saved = localStorage.getItem('opi-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var t = saved === 'dark' || saved === 'light' ? saved : (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <slot />
+</body>
+</html>
