@@ -6,8 +6,8 @@ import SectionHeading from './SectionHeading.astro';
   <div class="container">
     <SectionHeading eyebrow="About" title="Production Flutter apps, built with AI, backed by Firebase" subtitle="A practical, product-minded engineer — focused on clean architecture, reliable features, and maintainable code." />
     <div class="grid">
-      <div class="bio">{ABOUT_PARAGRAPHS.map((par) => <p>{par}</p>)}<p class="muted"><em>Education, certifications, and awards are not listed in the source portfolio, so they are omitted here rather than invented.</em></p></div>
-      <aside class="facts" aria-label="At a glance">
+      <div class="bio" data-reveal>{ABOUT_PARAGRAPHS.map((par) => <p>{par}</p>)}</div>
+      <aside class="facts" aria-label="At a glance" data-reveal style="--d:120ms">
         <h3>At a glance</h3>
         <dl>{ABOUT_FACTS.map((f) => <div class="fact"><dt>{f.label}</dt><dd><strong>{f.value}</strong><span>{f.note}</span></dd></div>)}</dl>
         <div class="stack"><h4>Core stack</h4><div class="chips">{ABOUT_STACK.map((s) => <span class="chip">{s}</span>)}</div></div>
@@ -20,8 +20,12 @@ import SectionHeading from './SectionHeading.astro';
   @media(min-width:900px){.grid{grid-template-columns:1.35fr 0.85fr}}
   .bio p{font-size:1.05rem;line-height:1.75;color:var(--text-2)}
   .bio p:first-child{color:var(--text);font-size:1.12rem}
-  .muted{font-size:0.9rem!important;color:var(--text-3)!important}
-  .facts{border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:1.5rem}
+  /* Removed the old meta disclaimer ("Education, certifications, and awards
+     are not listed…") — it read as build notes on a live portfolio.
+     Nothing is invented: education / certifications / awards are simply
+     not listed, as before. */
+  .facts{border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:1.5rem;transition:transform 0.3s var(--ease),box-shadow 0.3s var(--ease),border-color 0.3s var(--ease)}
+  .facts:hover{transform:translateY(-3px);border-color:var(--border-strong);box-shadow:var(--shadow-md)}
   .facts h3{margin:0 0 1rem;font-family:var(--font-display)}
   .fact{display:flex;justify-content:space-between;gap:1rem;padding:0.7rem 0;border-bottom:1px solid var(--border)}
   .fact:last-child{border-bottom:0}
@@ -31,4 +35,10 @@ import SectionHeading from './SectionHeading.astro';
   .stack{margin-top:1.25rem}
   .stack h4{margin:0 0 0.6rem}
   .chips{display:flex;flex-wrap:wrap;gap:0.4rem}
+  .chips .chip{transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),color var(--dur) var(--ease),transform var(--dur) var(--ease)}
+  .chips .chip:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--text);transform:translateY(-1px)}
+  @media (prefers-reduced-motion: reduce){
+    .facts,.chips .chip{transition:none}
+    .facts:hover,.chips .chip:hover{transform:none}
+  }
 </style>
