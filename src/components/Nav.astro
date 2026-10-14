@@ -1,0 +1,70 @@
+---
+import { PROFILE, NAV_LINKS } from '../data/portfolio';
+import Icon from './Icon.astro';
+---
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="#top" class="brand" aria-label="Back to top"><span class="logo">OPI</span><span class="brand-name">{PROFILE.name}</span></a>
+    <nav class="desktop" aria-label="Primary"><ul>{NAV_LINKS.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul></nav>
+    <div class="actions">
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle theme"><span id="theme-icon-sun"><Icon name="sun" /></span><span id="theme-icon-moon" hidden><Icon name="moon" /></span></button>
+      <a class="btn btn-primary cv" href={PROFILE.cvUrl} target="_blank" rel="noopener">View CV</a>
+      <button class="icon-btn mobile-btn" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu"><span id="menu-icon-open"><Icon name="menu" /></span><span id="menu-icon-close" hidden><Icon name="close" /></span></button>
+    </div>
+  </div>
+  <nav id="mobile-menu" class="mobile" aria-label="Mobile" hidden><ul>{NAV_LINKS.map((l) => <li><a href={l.href}>{l.label}</a></li>)}<li><a href={PROFILE.cvUrl} target="_blank" rel="noopener">View CV</a></li></ul></nav>
+</header>
+<style>
+  .nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--bg) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:64px}
+  .brand{display:flex;align-items:center;gap:0.6rem;text-decoration:none;font-weight:700}
+  .logo{display:grid;place-items:center;width:34px;height:34px;background:var(--text);color:var(--bg);border-radius:6px;font-family:var(--font-display);font-size:0.85rem;letter-spacing:0.08em}
+  .brand-name{font-family:var(--font-display);font-size:0.95rem}
+  @media(max-width:860px){.brand-name{display:none}}
+  .desktop ul{display:flex;gap:1.6rem;list-style:none;margin:0;padding:0}
+  .desktop a{text-decoration:none;color:var(--text-2);font-size:0.92rem;font-weight:500}
+  .desktop a:hover{color:var(--text)}
+  @media(max-width:860px){.desktop{display:none}}
+  .actions{display:flex;gap:0.5rem;align-items:center}
+  .icon-btn{display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--border);background:var(--surface);border-radius:8px;cursor:pointer;color:var(--text)}
+  .mobile-btn{display:none}
+  @media(max-width:860px){.mobile-btn{display:grid} .cv{display:none}}
+  .mobile{border-top:1px solid var(--border);padding:0.75rem 1.25rem 1rem}
+  .mobile ul{list-style:none;margin:0;padding:0;display:grid;gap:0.25rem}
+  .mobile a{display:block;padding:0.7rem 0.25rem;text-decoration:none;font-weight:500}
+</style>
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  const sun = document.getElementById('theme-icon-sun');
+  const moon = document.getElementById('theme-icon-moon');
+  const apply = (t: string) => {
+    document.documentElement.setAttribute('data-theme', t);
+    const dark = t === 'dark';
+    if (sun) sun.hidden = dark;
+    if (moon) moon.hidden = !dark;
+    toggle?.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+  };
+  apply(document.documentElement.getAttribute('data-theme') || 'light');
+  toggle?.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('opi-theme', next); } catch {}
+    apply(next);
+  });
+  const menuBtn = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const openIcon = document.getElementById('menu-icon-open');
+  const closeIcon = document.getElementById('menu-icon-close');
+  menuBtn?.addEventListener('click', () => {
+    const open = !!menu?.hidden;
+    if (menu) menu.hidden = !open;
+    menuBtn.setAttribute('aria-expanded', String(open));
+    if (openIcon) openIcon.hidden = open;
+    if (closeIcon) closeIcon.hidden = !open;
+  });
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+    if (menu) menu.hidden = true;
+    menuBtn?.setAttribute('aria-expanded', 'false');
+    if (openIcon) openIcon.hidden = false;
+    if (closeIcon) closeIcon.hidden = true;
+  }));
+</script>

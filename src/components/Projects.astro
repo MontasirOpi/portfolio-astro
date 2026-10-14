@@ -1,0 +1,80 @@
+---
+import { PROJECTS, initials } from '../data/portfolio';
+import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+const filters = ['All', 'Mobile', 'Package', 'Web'] as const;
+---
+<section class="section" id="projects">
+  <div class="container">
+    <SectionHeading eyebrow="Featured projects" title="Real work, real links" subtitle="12 projects from my portfolio. Production travel apps link to their store listings. Open-source work links to GitHub and pub.dev. No invented metrics." />
+    <div class="filters" role="group" aria-label="Filter projects by category">
+      {filters.map((f) => <button type="button" data-filter={f} aria-pressed={f === 'All' ? 'true' : 'false'} class={f === 'All' ? 'active' : ''}>{f}</button>)}
+    </div>
+    <p class="count" aria-live="polite" id="project-count">Showing {PROJECTS.length} of {PROJECTS.length} projects</p>
+    <div class="list" id="project-list">
+      {PROJECTS.map((p, idx) => (
+        <article class:list={['proj', { featured: idx < 3 }]} data-category={p.category} data-slug={p.slug}>
+          <div class="visual">
+            {p.image ? <img src={p.image} alt={p.imageAlt || p.name} loading="lazy" width="640" height="400" /> : p.networkImage ? <img src={p.networkImage} alt={p.imageAlt || p.name} loading="lazy" width="640" height="400" /> : <div class="placeholder" aria-hidden="true"><span>{initials(p.name)}</span><small>{p.category}</small></div>}
+          </div>
+          <div class="body">
+            <div class="top"><span class="cat">{p.category}</span>{p.role && <span class="role">{p.role}</span>}</div>
+            <h3>{p.name}</h3>
+            <p>{p.description}</p>
+            <ul class="features">{p.features.map((f) => <li>{f}</li>)}</ul>
+            <div class="chips">{p.technologies.map((t) => <span class="chip">{t}</span>)}</div>
+            <div class="links">
+              {p.github && <a href={p.github} target="_blank" rel="noopener"><Icon name="github" /> GitHub</a>}
+              {p.liveDemo && <a href={p.liveDemo} target="_blank" rel="noopener"><Icon name="external" /> Live Demo</a>}
+              {p.pubDev && <a href={p.pubDev} target="_blank" rel="noopener"><Icon name="external" /> Pub.dev</a>}
+              {p.playStore && <a href={p.playStore} target="_blank" rel="noopener"><Icon name="external" /> Play Store</a>}
+              {p.appStore && <a href={p.appStore} target="_blank" rel="noopener"><Icon name="external" /> App Store</a>}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .filters{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem}
+  .filters button{padding:0.55rem 1rem;border:1px solid var(--border);background:var(--surface);border-radius:999px;cursor:pointer;font-weight:600}
+  .filters button.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+  .count{color:var(--text-3);font-size:0.9rem;margin:0 0 1.5rem}
+  .list{display:grid;gap:1.25rem}
+  .proj{display:grid;gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--surface)}
+  @media(min-width:860px){.proj{grid-template-columns:0.9fr 1.1fr} .proj.featured{grid-template-columns:1fr 1fr}}
+  .visual{background:var(--surface-2);min-height:220px;display:grid;place-items:center;overflow:hidden}
+  .visual img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:8/5}
+  .placeholder{display:grid;place-items:center;text-align:center;gap:0.25rem;color:var(--text-2)}
+  .placeholder span{font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--text)}
+  .body{padding:1.5rem}
+  @media(min-width:860px){.body{padding:2rem}}
+  .top{display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center;margin-bottom:0.7rem}
+  .cat{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .role{font-size:0.82rem;color:var(--text-3)}
+  h3{margin:0 0 0.6rem;font-family:var(--font-display);font-size:1.35rem}
+  .body > p{color:var(--text-2);margin:0 0 1rem}
+  .features{margin:0 0 1.1rem;padding-left:1.15rem;color:var(--text-2)}
+  .features li{margin-bottom:0.35rem}
+  .chips{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.15rem}
+  .links{display:flex;flex-wrap:wrap;gap:1rem}
+  .links a{display:inline-flex;gap:0.4rem;align-items:center;font-weight:600;text-decoration:none;font-size:0.9rem}
+  .links a:hover{text-decoration:underline}
+</style>
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const cards = document.querySelectorAll<HTMLElement>('#project-list .proj');
+  const count = document.getElementById('project-count');
+  buttons.forEach((btn) => btn.addEventListener('click', () => {
+    const filter = btn.dataset.filter || 'All';
+    buttons.forEach((b) => { b.classList.toggle('active', b === btn); b.setAttribute('aria-pressed', String(b === btn)); });
+    let shown = 0;
+    cards.forEach((card) => {
+      const visible = filter === 'All' || card.dataset.category === filter;
+      card.hidden = !visible;
+      if (visible) shown++;
+    });
+    if (count) count.textContent = `Showing ${shown} of ${cards.length} projects`;
+  }));
+</script>

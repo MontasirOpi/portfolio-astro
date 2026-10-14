@@ -1,0 +1,108 @@
+---
+/**
+ * Fixed right-edge section rail — original implementation for this portfolio.
+ * Desktop only (>=1100px). Labels are this portfolio's own section names.
+ * Active section via IntersectionObserver; scroll progress via rAF-throttled listener.
+ */
+const items = [
+  { id: 'about', label: 'ABOUT' },
+  { id: 'skills', label: 'SKILLS' },
+  { id: 'ai', label: 'AI' },
+  { id: 'projects', label: 'PROJECTS' },
+  { id: 'experience', label: 'EXPERIENCE' },
+  { id: 'contact', label: 'CONTACT' },
+];
+const ticks = [0, 25, 50, 75, 100];
+---
+<aside class="side-nav" aria-label="Section navigation">
+  <div class="brand" aria-hidden="true">OPI</div>
+  <nav class="labels" aria-label="Jump to section">
+    <ul>
+      {items.map((item) => (
+        <li><button type="button" class="label" data-nav-id={item.id} aria-label={`Jump to ${item.label}`}>{item.label}</button></li>
+      ))}
+    </ul>
+  </nav>
+  <div class="ruler-wrap" aria-hidden="true">
+    <div class="ruler">
+      <div class="ruler-line"></div>
+      {ticks.map((tick) => (
+        <div class="tick" style={`top:${tick}%`}><span class="tick-mark"></span><span class="tick-num">{tick}</span></div>
+      ))}
+      <div class="progress-dot" id="sidenav-dot"></div>
+    </div>
+    <div class="progress-label" id="sidenav-pct">0%</div>
+  </div>
+</aside>
+<style>
+  .side-nav { display: none; animation: sideFade 0.6s ease both; }
+  @keyframes sideFade { from { opacity: 0.2; } to { opacity: 1; } }
+  @media (min-width: 1100px) {
+    .side-nav { display: flex; flex-direction: column; align-items: stretch; position: fixed; top: 64px; right: 0; bottom: 0; width: 112px; padding: 1rem 16px 1rem 10px; z-index: 40; background: var(--bg); border-left: 1px solid var(--border); }
+    .brand { font-family: var(--font-display); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.22em; color: var(--text-3); text-align: right; }
+    .labels { flex: 1; display: flex; align-items: center; justify-content: flex-end; }
+    .labels ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.9rem; align-items: flex-end; width: 100%; }
+    .labels li { width: 100%; text-align: right; }
+    .label { width: 100%; padding: 0; background: none; border: 0; cursor: pointer; font-family: var(--font-display); font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em; color: var(--text-3); text-align: right; white-space: nowrap; transition: color 250ms ease, font-size 250ms ease, opacity 250ms ease; }
+    .label:hover { color: var(--text); }
+    .label.passed { opacity: 0.6; }
+    .label.active { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; color: var(--text); opacity: 1; }
+    .ruler-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
+    .ruler { position: relative; width: 26px; height: 190px; }
+    .ruler-line { position: absolute; top: 0; bottom: 0; right: 5px; width: 1px; background: var(--border-strong); }
+    .tick { position: absolute; right: 0; display: flex; align-items: center; gap: 3px; transform: translateY(-50%); }
+    .tick-mark { width: 8px; height: 1px; background: var(--text-3); }
+    .tick-num { font-family: var(--font-mono); font-size: 0.52rem; color: var(--text-3); line-height: 1; }
+    .progress-dot { position: absolute; right: 2px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); transform: translateY(-50%); transition: top 120ms linear; top: 0%; }
+    .progress-label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-2); min-width: 26px; text-align: right; }
+  }
+  @media print { .side-nav { display: none !important; } }
+</style>
+<script>
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.side-nav .label'));
+  const dot = document.getElementById('sidenav-dot');
+  const pctLabel = document.getElementById('sidenav-pct');
+  const ids = buttons.map((b) => b.dataset.navId || '');
+  let activeId: string | null = null;
+  function setActive(id: string | null) {
+    activeId = id;
+    const activeIdx = ids.indexOf(id || '');
+    buttons.forEach((b, i) => {
+      const isActive = b.dataset.navId === id;
+      b.classList.toggle('active', isActive);
+      b.classList.toggle('passed', activeIdx !== -1 && i < activeIdx);
+      if (isActive) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current');
+    });
+  }
+  function updateProgress() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = max <= 0 ? 0 : Math.min(100, Math.max(0, Math.round((window.scrollY / max) * 100)));
+    if (dot) dot.style.top = pct + '%';
+    if (pctLabel) pctLabel.textContent = pct + '%';
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) setActive('contact');
+  }
+  let ticking = false;
+  const schedule = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; updateProgress(); });
+  };
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+  updateProgress();
+  if (typeof IntersectionObserver !== 'undefined') {
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) if (entry.isIntersecting) setActive(entry.target.id);
+    }, { root: null, rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+    for (const id of ids) { const el = document.getElementById(id); if (el) observer.observe(el); }
+  }
+  buttons.forEach((b) => b.addEventListener('click', () => {
+    const id = b.dataset.navId;
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (!el) return;
+    setActive(id);
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+  }));
+</script>
