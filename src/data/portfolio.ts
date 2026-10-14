@@ -15,8 +15,8 @@ export const PROFILE = {
   shortName: 'Opi',
   brand: 'OPI',
   title: 'Associate Software Engineer',
-  roleLine: 'Mobile Application Developer & AI-Assisted Software Engineer',
-  heroIntro: 'I build premium Flutter mobile apps with Riverpod and GetX, scalable Node.js and TypeScript backends, and high-performance OTA travel systems — with AI-assisted workflows that keep delivery fast and maintainable.',
+  roleLine: 'Flutter Developer & AI-Assisted Software Engineer',
+  heroIntro: 'Flutter developer building production mobile apps, using AI-assisted workflows, with Firebase + Node.js backends — and OTA travel systems as one specialty, not the whole story.',
   email: 'devmontasir@gmail.com',
   phoneDisplay: '+880 1757150553',
   phoneHref: 'tel:+8801757150553',
@@ -29,9 +29,10 @@ export const PROFILE = {
 };
 
 export const ABOUT_PARAGRAPHS = [
-  'I build scalable mobile apps and travel-technology platforms. My recent work is focused on OTA systems — flight booking, hotel booking, transfer management, insurance integration, and eSIM solutions.',
-  'I work across the stack: high-performance Android and cross-platform apps with Flutter, Riverpod and GetX, REST APIs, plus Node.js and TypeScript backend services with modern architecture. I deploy and maintain production apps on Google Play and the App Store, with ongoing attention to performance, UX, and maintainability.',
-  'I use AI-assisted engineering — agentic workflows, function calling and tool orchestration, and AI-assisted review and diagnostics — to speed up delivery without giving up code quality.',
+  'I am a Flutter developer. I build production mobile apps with clean architecture and Riverpod, GetX, and BLoC — and ship and maintain them on Google Play and the App Store, with ongoing attention to performance, UX, and maintainability.',
+  'I am an expert in AI-assisted development. I use agentic workflows, prompt engineering, function and tool calling, MCP, and AI-assisted review and diagnostics — with Cursor, GitHub Copilot, Claude, GPT-4o, and Gemini — to deliver faster without giving up code quality. AI speeds up the work; human review decides what ships.',
+  'On the backend, I work with Firebase — Auth, Cloud Firestore, Cloud Functions, Cloud Messaging, Storage, and Hosting — plus Node.js and TypeScript REST services, and Supabase and PostgreSQL where they fit.',
+  'OTA travel is one domain I apply this in: flight, hotel, transfer, insurance, and eSIM booking flows. It is a specialty, not the whole story.',
 ];
 
 export const ABOUT_FACTS = [
@@ -41,22 +42,21 @@ export const ABOUT_FACTS = [
   { value: 'Multiple', label: 'Apps published', note: 'Play Store & App Store' },
 ];
 
-export const ABOUT_STACK = ['Flutter','Dart','Riverpod','GetX','Node.js','TypeScript','REST API','Firebase','AI Agents in Flutter','Agentic AI','OTA Systems','eSIM','Cursor AI','GitHub','Play Store Deployment'];
+export const ABOUT_STACK = ['Flutter','Dart','Riverpod','GetX','BLoC','Firebase','Node.js','TypeScript','REST API','AI Agents in Flutter','Agentic AI','Cursor AI','GitHub','Play Store Deployment','OTA Systems'];
 
 export const SKILL_GROUPS: SkillGroup[] = [
   { title: 'Mobile Development', items: ['Flutter','Dart','Riverpod','GetX State Management','BLoC Pattern','Android & iOS Dev','Clean Architecture','Responsive Design'] },
-  { title: 'Backend & APIs', items: ['Node.js','TypeScript','Express.js','RESTful APIs','Firebase Cloud','Supabase Backend','User Authentication (JWT)','WebSockets','Push Notifications'] },
+  { title: 'AI-Assisted Engineering', items: ['Agentic AI Workflows','AI Agents in Flutter','Prompt Engineering','LLM Function & Tool Calling','Model Context Protocol (MCP)','Multi-Agent Systems','AI Diagnostics & Code Review','Cursor IDE','GitHub Copilot','Claude 3.5 Sonnet','GPT-4o / OpenAI','Gemini Pro','OpenRouter APIs','Local LLM Deployment (Ollama)','Local Llama models'] },
+  { title: 'Backend & APIs', items: ['Firebase Auth','Cloud Firestore','Cloud Functions','Firebase Cloud Messaging','Firebase Storage','Firebase Hosting','Node.js','TypeScript','Express.js','RESTful APIs','Supabase Backend','User Authentication (JWT)','WebSockets','Push Notifications'] },
   { title: 'Databases & Cache', items: ['PostgreSQL','MongoDB','SQLite Local','Hive Database','Shared Preferences'] },
   { title: 'DevOps & Deployment', items: ['Git / Version Control','GitHub Actions','CI/CD Pipelines','Play Store Console','App Store Connect','Vercel Deployment'] },
   { title: 'Travel Technology (OTA)', items: ['Flight Booking Systems','Hotel Booking Systems','Transfer Modules','Insurance Modules','eSIM API Integration','B2B & B2C Platforms'] },
-  { title: 'AI Agents & Modern Workflows', items: ['AI Agents in Flutter','LLM Function & Tool Calling','Agentic AI Workflows','Model Context Protocol (MCP)','Cursor AI Orchestration','Local LLM Deployment (Ollama)','Multi-Agent Systems','Prompt Engineering','AI Diagnostics & Code Review'] },
-  { title: 'AI Tools & Platforms', items: ['Claude 3.5 Sonnet','GPT-4o / OpenAI','Gemini Pro','Cursor IDE','GitHub Copilot','OpenRouter APIs','Local Llama models'] },
 ];
 
 export const AI_GROUPS: AiGroup[] = [
-  { title: 'AI-assisted development', description: 'Tools and workflows I use day-to-day to write, debug, refactor, and review code faster — with human review before shipping.', items: ['Cursor IDE','GitHub Copilot','AI-assisted coding, debugging & refactoring','AI-assisted code review','Documentation generation'] },
-  { title: 'AI integration & APIs', description: 'Patterns I have worked with in Flutter and backend services. Presented as workflows I use, not as expert-level claims.', items: ['LLM API integration (OpenRouter, OpenAI, Gemini, Claude)','Prompt engineering','LLM function & tool calling','Model Context Protocol (MCP)','Local LLM deployment — Ollama / Local Llama','Agentic workflows & tool orchestration'] },
-  { title: 'Engineering workflows', description: 'Where AI fits into a practical delivery loop — requirements, implementation, testing, and maintenance.', items: ['AI-assisted test generation','Debugging & root-cause analysis','AI diagnostics & code review','Development workflow automation','Reusable components & clean architecture'] },
+  { title: 'AI-assisted development', description: 'My daily expert workflow: write, debug, refactor, and review code faster with AI — with human review before shipping.', items: ['Cursor IDE','GitHub Copilot','AI-assisted coding, debugging & refactoring','AI-assisted code review','Documentation generation'] },
+  { title: 'AI integration & APIs', description: 'Patterns I use in Flutter and backend services: agents, tools, and models wired into real features.', items: ['LLM API integration (OpenRouter, OpenAI, Gemini, Claude)','Prompt engineering','LLM function & tool calling','Model Context Protocol (MCP)','Local LLM deployment — Ollama / Local Llama','Agentic workflows & tool orchestration'] },
+  { title: 'Engineering workflows', description: 'AI across the delivery loop — requirements, implementation, testing, and maintenance.', items: ['AI-assisted test generation','Debugging & root-cause analysis','AI diagnostics & code review','Development workflow automation','Reusable components & clean architecture'] },
 ];
 
 export const PROJECTS: Project[] = [
@@ -75,18 +75,17 @@ export const PROJECTS: Project[] = [
 ];
 
 export const EXPERIENCE: Experience[] = [
-  { company:'Innovate Solutions', title:'Associate Software Engineer', dates:'Nov 2025 — Present', responsibilities:['Develop and maintain OTA mobile apps with Flutter and GetX.','Integrate REST APIs for flight, hotel, transfer, insurance, and eSIM booking.','Publish and maintain Android and iOS apps on Google Play Store and Apple App Store.','Collaborate cross-functionally on scalable, high-performance travel booking solutions.','Improve performance, UI consistency, memory use, and code maintainability.','Integrate WebSocket streams for real-time statuses.'], technologies:['Flutter','Dart','GetX','REST API','Firebase','eSIM Integration','OTA Systems','WebSocket'] },
+  { company:'Innovate Solutions', title:'Associate Software Engineer', dates:'Nov 2025 — Present', responsibilities:['Build and maintain production Flutter apps with GetX, including OTA booking flows.','Integrate REST APIs for flight, hotel, transfer, insurance, and eSIM booking.','Publish and maintain Android and iOS apps on Google Play Store and Apple App Store.','Ship with Firebase services and AI-assisted workflows — review, diagnostics, refactoring — with human review before release.','Improve performance, UI consistency, memory use, and code maintainability.','Integrate WebSocket streams for real-time statuses.'], technologies:['Flutter','Dart','GetX','REST API','Firebase','eSIM Integration','OTA Systems','WebSocket'] },
   { company:'Eon System', title:'Junior Flutter Developer', dates:'Aug 2025 — Oct 2025', responsibilities:['Built cross-platform mobile apps with Flutter and Dart.','Worked with senior developers on premium, responsive UI components.','Integrated third-party payment gateway APIs and RESTful services.','Managed state with GetX.','Built 2 complete mobile app modules from scratch and optimized rendering lifecycles.'], technologies:['Flutter','Dart','GetX','REST API','Git','Payment Integration'] },
 ];
 
 export const WORKFLOW = [
-  { step:'01', title:'Requirements & architecture', text:'Clarify the booking flow, edge cases, and data model before writing UI. Choose state management and module boundaries that stay maintainable.' },
-  { step:'02', title:'Reusable components', text:'Build small, composable widgets and shared patterns so screens stay consistent and changes stay cheap.' },
-  { step:'03', title:'API integration', text:'Integrate REST and WebSocket APIs with clear error, loading, and offline states — especially for flight, hotel, and eSIM flows.' },
-  { step:'04', title:'Testing & debugging', text:'Verify happy paths and failure paths, trace root causes, and keep fixes narrow and reviewable.' },
-  { step:'05', title:'Version control & collaboration', text:'Work in small, reviewable changes on Git, with clear commit history and cross-functional communication.' },
-  { step:'06', title:'AI-assisted productivity', text:'Use AI-assisted coding, review, and diagnostics to move faster — with human review before shipping.' },
-  { step:'07', title:'Performance & maintainability', text:'Watch rendering, caching, memory, and consistency. Prefer simple, readable code that is easy to maintain.' },
+  { step:'01', title:'Requirements & architecture', text:'Clarify the flow, edge cases, and data model before writing UI. Choose state management and module boundaries that stay maintainable.' },
+  { step:'02', title:'Reusable Flutter components', text:'Build small, composable widgets and shared patterns so screens stay consistent and changes stay cheap.' },
+  { step:'03', title:'Backend — Firebase + APIs', text:'Wire Firebase (Auth, Firestore, Functions, Messaging) plus REST and WebSocket APIs, with clear error, loading, and offline states.' },
+  { step:'04', title:'AI-assisted delivery', text:'Use AI-assisted coding, review, and diagnostics to move faster — with human review before shipping.' },
+  { step:'05', title:'Testing & debugging', text:'Verify happy paths and failure paths, trace root causes, and keep fixes narrow and reviewable.' },
+  { step:'06', title:'Performance & maintainability', text:'Watch rendering, caching, memory, and consistency. Work in small, reviewable Git changes. Prefer simple, readable code.' },
 ];
 
 export const NAV_LINKS = [

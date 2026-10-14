@@ -4,9 +4,9 @@ import SectionHeading from './SectionHeading.astro';
 ---
 <section class="section" id="ai">
   <div class="container">
-    <SectionHeading eyebrow="AI engineering" title="How I use AI to build better software" subtitle="AI is part of my engineering workflow — for coding, integration, and review — not a marketing claim. Tools listed are those named in my source portfolio." />
+    <SectionHeading eyebrow="AI engineering" title="Expert in AI-assisted engineering" subtitle="AI is how I ship faster — for coding, integration, and review. Tools listed are those named in my source portfolio." />
     <div class="grid">{AI_GROUPS.map((g, idx) => <article><p class="num">{String(idx + 1).padStart(2, '0')}</p><h3>{g.title}</h3><p>{g.description}</p><ul>{g.items.map((i) => <li>{i}</li>)}</ul></article>)}</div>
-    <p class="note">Honest framing: these are tools and workflows I use. I do not claim expert-level mastery of every item, and I do not list tools that were not in the source portfolio.</p>
+    <p class="note">Tools and workflows I use daily — listed items are those from my source portfolio, not invented claims.</p>
   </div>
 </section>
 <style>

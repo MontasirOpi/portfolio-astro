@@ -7,7 +7,7 @@ const counts = { All: PROJECTS.length, Mobile: PROJECTS.filter((p) => p.category
 ---
 <section class="section" id="projects">
   <div class="container">
-    <SectionHeading eyebrow="Featured projects" title="Real work, real links" subtitle="12 projects from my portfolio. Production travel apps link to their store listings. Open-source work links to GitHub and pub.dev. No invented metrics." />
+    <SectionHeading eyebrow="Featured projects" title="Real work, real links" subtitle="12 Flutter-first projects. Production apps link to their store listings. Open-source work links to GitHub and pub.dev. No invented metrics." />
     <div class="filter-row" data-reveal>
       <div class="filters" role="group" aria-label="Filter projects by category">
         {filters.map((f) => <button type="button" data-filter={f} aria-pressed={f === 'All' ? 'true' : 'false'} class={f === 'All' ? 'active' : ''}>{f} <span class="f-count">{counts[f]}</span></button>)}
