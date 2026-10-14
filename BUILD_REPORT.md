@@ -38,6 +38,18 @@ Astro conversion of the Angular portfolio, same content + design:
 - **Animations (all <500ms, reduced-motion collapses):** scroll reveal via IntersectionObserver (fade+rise, once, staggered for project cards via `--d`); hero staggered entrance + name underline draw + slow accent gradient shift only; nav underline grow + active-section indicator via IntersectionObserver; buttons lift on hover; SideNav active-label transition smoothed to 300ms ease.
 - **Validation (this update):** `npm run build` PASS (1 page, 2.78s); `dist/index.html` 67K, CSS 25K; all 12 project names + `data-filter` + reveal/hero classes present. Angular project untouched.
 
+## Update 2026-10-14 — Rebalance: Flutter first, AI expert, Firebase backend, OTA as one specialty (local only, not pushed/deployed)
+
+- **Identity:** Hero = "Flutter Developer · Associate Software Engineer". Focus chips: Flutter · AI-Assisted · Firebase · OTA. Hero card: "Production Flutter apps — AI-assisted · Firebase backends · OTA as one specialty". SEO title/description + JSON-LD jobTitle updated the same way.
+- **About:** Reordered to 4 tight paragraphs — 1) Flutter developer (production apps, Play/App Store, clean architecture, Riverpod/GetX/BLoC), 2) Expert in AI-assisted development (agentic workflows, prompt engineering, function/tool calling, MCP, review/diagnostics, Cursor/Copilot/Claude/GPT-4o/Gemini — framed as workflows/tools used), 3) Backend: Firebase (Auth, Firestore, Cloud Functions, Messaging, Storage, Hosting) + Node.js/TS REST + Supabase/Postgres, 4) OTA as one domain, one paragraph max.
+- **Skills:** Reordered to 6 groups — Mobile, AI-Assisted Engineering (merged the two old AI groups, deduplicated), Backend & APIs (Firebase expanded: Auth, Firestore, Functions, Messaging, Storage, Hosting + Node/TS/Express/REST/JWT/WebSockets), Databases, DevOps, Travel Technology (OTA) LAST.
+- **AI section:** Retitled "Expert in AI-assisted engineering", 3 compact cards kept, honest note shortened to "tools/workflows I use daily".
+- **Projects:** All 12 kept, same names/descriptions/links. Section intro now "Flutter-first" instead of OTA-first; per-project category badges unchanged.
+- **Experience:** Both jobs kept. Innovate Solutions bullets tightened — OTA repetition reduced, one bullet now covers Firebase + AI-assisted delivery (both already in source: Firebase was in that job's tech list, AI-assisted is the profile's workflow).
+- **Workflow:** Tightened 7 → 6 steps: Requirements, Reusable Flutter components, Backend — Firebase + APIs, AI-assisted delivery, Testing & debugging, Performance & maintainability (Git merged in).
+- **Design efficiency:** Section padding reduced (--space-6 4rem→3.25rem, --space-7 5.5rem→4.5rem), H2 slightly smaller, section-head margin 2.5rem→2rem. Repeated OTA mentions removed from headings/intros; duplicate AI lists consolidated.
+- **Validation (this update):** `npm run build` PASS (1 page, 2.73s); dist/index.html 67K, CSS 25K; all 12 project names + both employers present; "Flutter Developer" ×7, "Firebase" ×22, "AI-assisted" ×16, "Expert in AI-assisted" ×1. No invented jobs/projects/certs/metrics. Angular project untouched.
+
 ## Not done (by design)
 
 - No GitHub repo created, no deploy. Local build only.
