@@ -77,10 +77,14 @@ const total = SKILL_GROUPS.reduce((n, g) => n + g.items.length, 0);
 </style>
 <script>
   const input = document.getElementById('skill-search') as HTMLInputElement | null;
-  const groups = Array.from(document.querySelectorAll<HTMLElement>('#skill-groups [data-group]'));
+  const groups = Array.from(document.querySelectorAll<HTMLElement>('#skill-groups [data-group]')).map((el) => ({
+    el,
+    sub: el.querySelector('.g-sub'),
+    total: el.querySelectorAll('li').length,
+  }));
   const countEl = document.getElementById('skill-count');
   const emptyEl = document.getElementById('skill-empty');
-  const totalSkills = groups.reduce((n, g) => n + g.querySelectorAll('li').length, 0);
+  const totalSkills = groups.reduce((n, g) => n + g.total, 0);
   const renderCount = (n: number) => { if (countEl) countEl.textContent = `${n} / ${totalSkills}`; };
   renderCount(totalSkills);
   input?.addEventListener('input', () => {
@@ -88,12 +92,13 @@ const total = SKILL_GROUPS.reduce((n, g) => n + g.items.length, 0);
     let shown = 0;
     groups.forEach((g) => {
       let gShown = 0;
-      g.querySelectorAll('li').forEach((li) => {
+      g.el.querySelectorAll('li').forEach((li) => {
         const hit = !q || (li.dataset.label || '').includes(q);
         li.hidden = !hit;
         if (hit) { gShown++; shown++; }
       });
-      g.hidden = gShown === 0;
+      g.el.hidden = gShown === 0;
+      if (g.sub) g.sub.textContent = q ? `${gShown} of ${g.total} skills` : `${g.total} skills`;
     });
     if (emptyEl) emptyEl.hidden = shown !== 0;
     renderCount(shown);
