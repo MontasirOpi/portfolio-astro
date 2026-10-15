@@ -1,5 +1,6 @@
 export interface SocialLink { label: string; href: string; }
-export interface SkillGroup { title: string; items: string[]; note?: string; }
+export interface SkillItem { label: string; icon?: string; }
+export interface SkillGroup { title: string; items: SkillItem[]; icon: string; accent: string; note?: string; }
 export interface Project {
   slug: string; name: string; category: 'Mobile' | 'AI' | 'Package' | 'Web' | 'Tools';
   description: string; technologies: string[]; features: string[];
@@ -45,12 +46,38 @@ export const ABOUT_FACTS = [
 export const ABOUT_STACK = ['Flutter','Dart','Riverpod','GetX','BLoC','Firebase','Node.js','TypeScript','REST API','AI Agents in Flutter','Agentic AI','Cursor AI','GitHub','Play Store Deployment','OTA Systems'];
 
 export const SKILL_GROUPS: SkillGroup[] = [
-  { title: 'Mobile Development', items: ['Flutter','Dart','Kotlin','Riverpod','GetX State Management','BLoC Pattern','Nearby Connections (P2P)','Android & iOS Dev','Clean Architecture','Responsive Design'] },
-  { title: 'AI-Assisted Engineering', items: ['Agentic AI Workflows','AI Agents in Flutter','On-device AI (ONNX Runtime)','Prompt Engineering','LLM Function & Tool Calling','Model Context Protocol (MCP)','Multi-Agent Systems','AI Diagnostics & Code Review','Cursor IDE','GitHub Copilot','Claude 3.5 Sonnet','GPT-4o / OpenAI','Gemini Pro','OpenRouter APIs','Local LLM Deployment (Ollama)','Local Llama models'] },
-  { title: 'Backend & APIs', items: ['Firebase Auth','Cloud Firestore','Cloud Functions','Firebase Cloud Messaging','Firebase Storage','Firebase Hosting','Node.js','TypeScript','Express.js','RESTful APIs','Supabase Backend','User Authentication (JWT)','WebSockets','Push Notifications','Python (desktop tooling)'] },
-  { title: 'Databases & Cache', items: ['PostgreSQL','MongoDB','SQLite Local','Hive Database','Shared Preferences'] },
-  { title: 'DevOps & Deployment', items: ['Git / Version Control','GitHub Actions','CI/CD Pipelines','Play Store Console','App Store Connect','Vercel Deployment'] },
-  { title: 'Travel Technology (OTA)', items: ['Flight Booking Systems','Hotel Booking Systems','Transfer Modules','Insurance Modules','eSIM API Integration','B2B & B2C Platforms'] },
+  { title: 'Mobile Development', icon: 'flutter', accent: '#38bdf8', items: [
+    { label: 'Flutter', icon: 'flutter' }, { label: 'Dart', icon: 'dart' }, { label: 'Kotlin', icon: 'kotlin' },
+    { label: 'Riverpod' }, { label: 'GetX State Management' }, { label: 'BLoC Pattern' },
+    { label: 'Nearby Connections (P2P)', icon: 'bluetooth' }, { label: 'Android & iOS Dev', icon: 'android' },
+    { label: 'Clean Architecture' }, { label: 'Responsive Design' } ] },
+  { title: 'AI-Assisted Engineering', icon: 'anthropic', accent: '#a78bfa', items: [
+    { label: 'Agentic AI Workflows' }, { label: 'AI Agents in Flutter', icon: 'flutter' },
+    { label: 'On-device AI (ONNX Runtime)', icon: 'onnx' }, { label: 'Prompt Engineering' },
+    { label: 'LLM Function & Tool Calling' }, { label: 'Model Context Protocol (MCP)', icon: 'anthropic' },
+    { label: 'Multi-Agent Systems' }, { label: 'AI Diagnostics & Code Review' },
+    { label: 'Cursor IDE', icon: 'cursor' }, { label: 'GitHub Copilot', icon: 'githubcopilot' },
+    { label: 'Claude 3.5 Sonnet', icon: 'anthropic' }, { label: 'GPT-4o / OpenAI' },
+    { label: 'Gemini Pro', icon: 'googlegemini' }, { label: 'OpenRouter APIs', icon: 'openrouter' },
+    { label: 'Local LLM Deployment (Ollama)', icon: 'ollama' }, { label: 'Local Llama models', icon: 'meta' } ] },
+  { title: 'Backend & APIs', icon: 'firebase', accent: '#fbbf24', items: [
+    { label: 'Firebase Auth', icon: 'firebase' }, { label: 'Cloud Firestore', icon: 'firebase' },
+    { label: 'Cloud Functions', icon: 'firebase' }, { label: 'Firebase Cloud Messaging', icon: 'firebase' },
+    { label: 'Firebase Storage', icon: 'firebase' }, { label: 'Firebase Hosting', icon: 'firebase' },
+    { label: 'Node.js', icon: 'nodedotjs' }, { label: 'TypeScript', icon: 'typescript' },
+    { label: 'Express.js', icon: 'express' }, { label: 'RESTful APIs' },
+    { label: 'Supabase Backend', icon: 'supabase' }, { label: 'User Authentication (JWT)' },
+    { label: 'WebSockets' }, { label: 'Push Notifications' }, { label: 'Python (desktop tooling)', icon: 'python' } ] },
+  { title: 'Databases & Cache', icon: 'postgresql', accent: '#34d399', items: [
+    { label: 'PostgreSQL', icon: 'postgresql' }, { label: 'MongoDB', icon: 'mongodb' },
+    { label: 'SQLite Local', icon: 'sqlite' }, { label: 'Hive Database' }, { label: 'Shared Preferences' } ] },
+  { title: 'DevOps & Deployment', icon: 'git', accent: '#f472b6', items: [
+    { label: 'Git / Version Control', icon: 'git' }, { label: 'GitHub Actions', icon: 'githubactions' },
+    { label: 'CI/CD Pipelines' }, { label: 'Play Store Console', icon: 'googleplay' },
+    { label: 'App Store Connect', icon: 'apple' }, { label: 'Vercel Deployment', icon: 'vercel' } ] },
+  { title: 'Travel Technology (OTA)', icon: '', accent: '#22d3ee', items: [
+    { label: 'Flight Booking Systems' }, { label: 'Hotel Booking Systems' }, { label: 'Transfer Modules' },
+    { label: 'Insurance Modules' }, { label: 'eSIM API Integration' }, { label: 'B2B & B2C Platforms' } ] },
 ];
 
 export const AI_GROUPS: AiGroup[] = [

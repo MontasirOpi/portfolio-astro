@@ -1,19 +1,101 @@
 ---
 import { SKILL_GROUPS } from '../data/portfolio';
 import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+
+const iconUrl = (slug: string) => `https://cdn.simpleicons.org/${slug}`;
+const initials = (label: string) =>
+  label.replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+const total = SKILL_GROUPS.reduce((n, g) => n + g.items.length, 0);
 ---
 <section class="section" id="skills">
   <div class="container">
     <SectionHeading eyebrow="Skills" title="What I work with" subtitle="Grouped by how I actually use them — no percentages, no inflated levels." />
-    <div class="groups">{SKILL_GROUPS.map((g) => <article class="group"><h3>{g.title}</h3><ul>{g.items.map((i) => <li>{i}</li>)}</ul></article>)}</div>
+    <div class="skill-search" data-reveal>
+      <Icon name="search" />
+      <input id="skill-search" type="search" placeholder={`Search ${total} skills — try "flutter", "firebase", "ai"…`} aria-label="Search skills" autocomplete="off" />
+      <span class="search-count" id="skill-count" aria-live="polite"></span>
+    </div>
+    <div class="groups" id="skill-groups">
+      {SKILL_GROUPS.map((g) => (
+        <article class="group" data-group data-reveal style={`--ga:${g.accent}`}>
+          <header>
+            <span class="g-icon">
+              {g.icon
+                ? <img src={iconUrl(g.icon)} alt="" loading="lazy" width="26" height="26" />
+                : <span class="mono" aria-hidden="true">OTA</span>}
+            </span>
+            <div>
+              <h3>{g.title}</h3>
+              <p class="g-sub">{g.items.length} skills</p>
+            </div>
+          </header>
+          <ul>
+            {g.items.map((s) => (
+              <li data-label={s.label.toLowerCase()}>
+                {s.icon
+                  ? <span class="logo"><img src={iconUrl(s.icon)} alt={s.label + ' logo'} loading="lazy" width="19" height="19" /></span>
+                  : <span class="logo mono-sm" aria-hidden="true">{initials(s.label)}</span>}
+                <span>{s.label}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+    <p class="no-results" id="skill-empty" hidden>No skills match your search — try another keyword.</p>
   </div>
 </section>
 <style>
-  .groups{display:grid;gap:1rem}
+  .skill-search{display:flex;align-items:center;gap:0.6rem;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:0.55rem 1.1rem;margin-bottom:1.5rem;max-width:560px;color:var(--text-3)}
+  .skill-search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);color:var(--text)}
+  .skill-search input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--text);font-size:0.92rem;font-family:inherit}
+  .skill-search input::placeholder{color:var(--text-3)}
+  .skill-search input::-webkit-search-cancel-button{cursor:pointer}
+  .search-count{font-family:var(--font-mono);font-size:0.72rem;color:var(--text-3);white-space:nowrap}
+  .groups{display:grid;gap:1.1rem}
   @media(min-width:700px){.groups{grid-template-columns:1fr 1fr}}
-  @media(min-width:1100px){.groups{grid-template-columns:1fr 1fr 1fr}}
-  .group{border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:1.35rem}
-  .group h3{margin:0 0 0.9rem;font-family:var(--font-display);font-size:1.05rem}
-  .group ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0.4rem}
-  .group li{border:1px solid var(--border);background:var(--surface-2);border-radius:999px;padding:0.28rem 0.6rem;font-size:0.84rem}
+  @media(min-width:1100px){.groups{grid-template-columns:repeat(3,1fr)}}
+  .group{--ga:#38bdf8;border:1px solid var(--border);background:linear-gradient(180deg,color-mix(in srgb,var(--ga) 7%,var(--surface)),var(--surface) 42%);border-radius:18px;padding:1.35rem;transition:transform 0.28s var(--ease),box-shadow 0.28s var(--ease),border-color 0.28s var(--ease)}
+  .group:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--ga) 45%,var(--border));box-shadow:0 14px 34px -14px color-mix(in srgb,var(--ga) 38%,transparent)}
+  .group[hidden]{display:none}
+  .group header{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.05rem}
+  .g-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:#f4f5f7;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06)}
+  .g-icon img{width:27px;height:27px}
+  .g-icon .mono{font-family:var(--font-display);font-weight:700;font-size:0.78rem;color:#0c0e12;letter-spacing:0.05em}
+  .group h3{margin:0;font-family:var(--font-display);font-size:1.02rem}
+  .g-sub{margin:0.15rem 0 0;font-size:0.74rem;color:var(--text-3);font-family:var(--font-mono)}
+  .group ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0.45rem}
+  .group li{display:inline-flex;align-items:center;gap:0.5rem;border:1px solid var(--border);background:var(--surface-2);border-radius:12px;padding:0.3rem 0.7rem 0.3rem 0.3rem;font-size:0.83rem;color:var(--text-2);transition:transform 0.2s var(--ease),border-color 0.2s var(--ease),color 0.2s var(--ease)}
+  .group li:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--ga) 55%,var(--border));color:var(--text)}
+  .group li[hidden]{display:none}
+  .logo{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:#f4f5f7;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06)}
+  .logo img{width:19px;height:19px}
+  .logo.mono-sm{font-family:var(--font-mono);font-size:0.62rem;font-weight:700;color:#0c0e12;background:linear-gradient(135deg,color-mix(in srgb,var(--ga) 75%,#ffffff),var(--ga))}
+  .no-results{margin:1.5rem 0 0;text-align:center;color:var(--text-3);font-size:0.9rem}
+  .no-results[hidden]{display:none}
 </style>
+<script>
+  const input = document.getElementById('skill-search') as HTMLInputElement | null;
+  const groups = Array.from(document.querySelectorAll<HTMLElement>('#skill-groups [data-group]'));
+  const countEl = document.getElementById('skill-count');
+  const emptyEl = document.getElementById('skill-empty');
+  const totalSkills = groups.reduce((n, g) => n + g.querySelectorAll('li').length, 0);
+  const renderCount = (n: number) => { if (countEl) countEl.textContent = `${n} / ${totalSkills}`; };
+  renderCount(totalSkills);
+  input?.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    let shown = 0;
+    groups.forEach((g) => {
+      let gShown = 0;
+      g.querySelectorAll('li').forEach((li) => {
+        const hit = !q || (li.dataset.label || '').includes(q);
+        li.hidden = !hit;
+        if (hit) { gShown++; shown++; }
+      });
+      g.hidden = gShown === 0;
+    });
+    if (emptyEl) emptyEl.hidden = shown !== 0;
+    renderCount(shown);
+  });
+</script>
