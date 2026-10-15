@@ -54,6 +54,7 @@ const counts: Record<(typeof filters)[number], number> = { All: PROJECTS.length,
   @media(min-width:700px){.list{grid-template-columns:repeat(2,1fr)}}
   @media(min-width:1100px){.list{grid-template-columns:repeat(3,1fr);gap:1.1rem}}
   .proj{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow-sm);transition:transform 0.28s var(--ease),box-shadow 0.28s var(--ease),border-color 0.28s var(--ease),opacity 0.25s ease}
+  .proj[hidden]{display:none}
   .proj:hover{transform:translateY(-4px);border-color:var(--border-strong);box-shadow:var(--shadow-md)}
   .proj.is-out{opacity:0;transform:scale(0.97) translateY(4px)}
   .proj.is-in{animation:cardIn 0.35s var(--ease) both}
