@@ -7,7 +7,7 @@ const counts: Record<(typeof filters)[number], number> = { All: PROJECTS.length,
 ---
 <section class="section" id="projects">
   <div class="container">
-    <SectionHeading eyebrow="Featured projects" title="Real work, real links" subtitle="17 projects — from production apps and on-device AI to open-source work. Production travel apps link to their store listings; everything else links to GitHub. No invented metrics." />
+    <SectionHeading eyebrow="Featured projects" title="Real work, real links" subtitle="19 projects — from production apps and on-device AI to open-source work. Production travel apps link to their store listings; everything else links to GitHub. No invented metrics." />
     <div class="filter-row" data-reveal>
       <div class="filters" role="group" aria-label="Filter projects by category">
         {filters.map((f) => <button type="button" data-filter={f} aria-pressed={f === 'All' ? 'true' : 'false'} class={f === 'All' ? 'active' : ''}>{f} <span class="f-count">{counts[f]}</span></button>)}

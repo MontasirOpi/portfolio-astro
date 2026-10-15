@@ -66,6 +66,14 @@ Astro conversion of the Angular portfolio, same content + design:
 - **Skills:** Mobile Development +Kotlin, +Nearby Connections (P2P); AI-Assisted Engineering +On-device AI (ONNX Runtime); Backend & APIs +Python (desktop tooling). Nothing else invented.
 - **Validation (this update):** `npm run build` PASS; dist/index.html contains all 17 project names + TypeFix + SnapText + GlassDrop + Disaster Alert + SkySearch. Angular project untouched.
 
+## Update 2026-10-15 — 2 new Web projects added (local only, not pushed/deployed)
+
+- **2 new projects added** (Web category, placed after Tea Stall so the Web group stays together; from user's real public GitHub repos, paraphrased, no invented metrics):
+  - **Wings of the World** (Web) — browser-based 3D flight simulator built with Three.js + HTML5/CSS3 + Web Audio API; real satellite imagery of any city; 5 selectable aircraft with distinct flight physics (F-22 Raptor, B737 airliner, Extra 330 acrobatic prop, SR-71 Blackbird, Cessna 172); departs from Hazrat Shahjalal International Airport (VGHS), Dhaka. GitHub: github.com/MontasirOpi/flight_game. Live demo: https://wings-vert.vercel.app (verified working today). Placeholder initials card.
+  - **Cosmic Odyssey** (Web) — interactive 3D WebGL astronomy portal built with Three.js; 3-tier deep cosmic zoom (Galaxy → Solar System → Planets & Moons); Sagittarius A* black hole simulator with gravitational-lensing visualization; bilingual English + Bengali (বাংলা). GitHub: github.com/MontasirOpi/galaxy. GitHub link only — no live demo (not verified). Placeholder initials card.
+- **Filters:** All / AI / Mobile / Package / Web / Tools — counts All 19, AI 1, Mobile 13, Package 1, Web 3, Tools 1 (counts computed dynamically from PROJECTS).
+- **Section intro:** updated to "19 projects — from production apps and on-device AI to open-source work."
+
 ## Not done (by design)
 
 - No GitHub repo created, no deploy. Local build only.
