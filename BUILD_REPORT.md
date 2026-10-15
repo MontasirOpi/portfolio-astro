@@ -50,6 +50,22 @@ Astro conversion of the Angular portfolio, same content + design:
 - **Design efficiency:** Section padding reduced (--space-6 4rem→3.25rem, --space-7 5.5rem→4.5rem), H2 slightly smaller, section-head margin 2.5rem→2rem. Repeated OTA mentions removed from headings/intros; duplicate AI lists consolidated.
 - **Validation (this update):** `npm run build` PASS (1 page, 2.73s); dist/index.html 67K, CSS 25K; all 12 project names + both employers present; "Flutter Developer" ×7, "Firebase" ×22, "AI-assisted" ×16, "Expert in AI-assisted" ×1. No invented jobs/projects/certs/metrics. Angular project untouched.
 
+## Update 2026-10-15 — Projects reorganized from real GitHub repos (local only, not pushed/deployed)
+
+- **5 new projects added** (from user's real public GitHub repos, paraphrased, no invented metrics):
+  - **TypeFix AI** (AI) — privacy-first, fully offline AI writing assistant for Android; native Kotlin InputMethodService typing engine + Flutter management app; on-device ONNX Runtime Mobile inference, zero cloud calls; DiffEngine + SafetyValidator. GitHub: github.com/MontasirOpi/TypeFix-Ai. Placeholder initials card.
+  - **GlassDrop** (Mobile) — AirDrop-style nearby file sharing for Android; Flutter + Google Nearby Connections (P2P_STAR) over Wi-Fi + Bluetooth; consent-based pairing, multi-file queue with live per-file progress, saves to Gallery/Downloads. GitHub: github.com/MontasirOpi/glassdrop-. Placeholder initials card.
+  - **Disaster Alert App** (Mobile) — real-time disaster/flood alerts; GDACS + OpenWeatherMap data; hashtag monitoring (#floodBD, #CycloneMocha); interactive OpenStreetMap + user location; GPS-based alert filtering; SOS distress messaging with location sharing; Firebase email/password auth. GitHub: github.com/MontasirOpi/disaster_alert_app. Placeholder initials card.
+  - **SkySearch** (Mobile) — Flutter flight search UI (home, airport search, date pick, passenger select). Card image: user's own README screenshot (github.com/user-attachments/assets/e794883e-3cd6-4ca7-b052-bbe974b18904). GitHub: github.com/MontasirOpi/sky_search.
+  - **SnapText** (Tools) — lightweight offline Windows screenshot utility with automatic OCR; Ctrl+Shift+X, region select → local Tesseract OCR → clipboard; multi-monitor + high-DPI; 100% offline, no telemetry. GitHub: github.com/MontasirOpi/Windows_snapText. Placeholder initials card.
+- **Not added (by design):** empty repo, template README starter projects, no-README repos.
+- **Order:** production 3 (InnoTrip, NoSafer, Travojet) → TypeFix AI (AI spotlight) → Mehndi, GlassDrop, Disaster Alert, SkySearch, Jomi, Library, Grocery, Fast Food, Weather, Weather Pal → date_with_range_picker (Package) → SnapText (Tools) → Tea Stall (Web).
+- **Filters:** All / AI / Mobile / Package / Web / Tools — counts All 17, AI 1, Mobile 13, Package 1, Web 1, Tools 1.
+- **Section intro:** "17 projects — from production apps and on-device AI to open-source work."
+- **AI section:** added shipped line — TypeFix AI, offline on-device writing assistant (Kotlin + Flutter, ONNX Runtime Mobile), link to repo. Honest-framing note kept.
+- **Skills:** Mobile Development +Kotlin, +Nearby Connections (P2P); AI-Assisted Engineering +On-device AI (ONNX Runtime); Backend & APIs +Python (desktop tooling). Nothing else invented.
+- **Validation (this update):** `npm run build` PASS; dist/index.html contains all 17 project names + TypeFix + SnapText + GlassDrop + Disaster Alert + SkySearch. Angular project untouched.
+
 ## Not done (by design)
 
 - No GitHub repo created, no deploy. Local build only.

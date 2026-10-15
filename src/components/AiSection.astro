@@ -6,6 +6,7 @@ import SectionHeading from './SectionHeading.astro';
   <div class="container">
     <SectionHeading eyebrow="AI engineering" title="Expert in AI-assisted engineering" subtitle="AI is how I ship faster — for coding, integration, and review. Tools listed are those named in my source portfolio." />
     <div class="grid">{AI_GROUPS.map((g, idx) => <article><p class="num">{String(idx + 1).padStart(2, '0')}</p><h3>{g.title}</h3><p>{g.description}</p><ul>{g.items.map((i) => <li>{i}</li>)}</ul></article>)}</div>
+    <p class="shipped" data-reveal>Shipped: <a href="https://github.com/MontasirOpi/TypeFix-Ai" target="_blank" rel="noopener">TypeFix AI</a> — a privacy-first, fully offline writing assistant for Android (Kotlin + Flutter) running ONNX Runtime Mobile on-device, with zero cloud calls.</p>
     <p class="note">Tools and workflows I use daily — listed items are those from my source portfolio, not invented claims.</p>
   </div>
 </section>
@@ -18,5 +19,8 @@ import SectionHeading from './SectionHeading.astro';
   article p{color:var(--text-2)}
   ul{margin:1rem 0 0;padding-left:1.15rem;color:var(--text-2)}
   li{margin-bottom:0.35rem}
+  .shipped{margin-top:1.5rem;padding:1rem 1.15rem;border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:10px;background:var(--surface);color:var(--text-2);font-size:0.92rem}
+  .shipped a{font-weight:700;color:var(--text);text-decoration:none}
+  .shipped a:hover{color:var(--accent)}
   .note{margin-top:2rem;padding:1rem 1.15rem;background:var(--accent-soft);border:1px solid var(--border);border-radius:10px;color:var(--text-2);font-size:0.92rem}
 </style>

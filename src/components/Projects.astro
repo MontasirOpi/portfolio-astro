@@ -2,12 +2,12 @@
 import { PROJECTS, initials } from '../data/portfolio';
 import SectionHeading from './SectionHeading.astro';
 import Icon from './Icon.astro';
-const filters = ['All', 'Mobile', 'Package', 'Web'] as const;
-const counts = { All: PROJECTS.length, Mobile: PROJECTS.filter((p) => p.category === 'Mobile').length, Package: PROJECTS.filter((p) => p.category === 'Package').length, Web: PROJECTS.filter((p) => p.category === 'Web').length };
+const filters = ['All', 'AI', 'Mobile', 'Package', 'Web', 'Tools'] as const;
+const counts: Record<(typeof filters)[number], number> = { All: PROJECTS.length, AI: PROJECTS.filter((p) => p.category === 'AI').length, Mobile: PROJECTS.filter((p) => p.category === 'Mobile').length, Package: PROJECTS.filter((p) => p.category === 'Package').length, Web: PROJECTS.filter((p) => p.category === 'Web').length, Tools: PROJECTS.filter((p) => p.category === 'Tools').length };
 ---
 <section class="section" id="projects">
   <div class="container">
-    <SectionHeading eyebrow="Featured projects" title="Real work, real links" subtitle="12 Flutter-first projects. Production apps link to their store listings. Open-source work links to GitHub and pub.dev. No invented metrics." />
+    <SectionHeading eyebrow="Featured projects" title="Real work, real links" subtitle="17 projects — from production apps and on-device AI to open-source work. Production travel apps link to their store listings; everything else links to GitHub. No invented metrics." />
     <div class="filter-row" data-reveal>
       <div class="filters" role="group" aria-label="Filter projects by category">
         {filters.map((f) => <button type="button" data-filter={f} aria-pressed={f === 'All' ? 'true' : 'false'} class={f === 'All' ? 'active' : ''}>{f} <span class="f-count">{counts[f]}</span></button>)}
