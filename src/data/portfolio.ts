@@ -18,7 +18,8 @@ export const PROFILE = {
   title: 'Associate Software Engineer',
   roleLine: 'Flutter Developer & AI-Assisted Software Engineer',
   heroIntro: 'Flutter developer building production mobile apps, using AI-assisted workflows, with Firebase + Node.js backends — and OTA travel systems as one specialty, not the whole story.',
-  email: 'devmontasir@gmail.com',
+  email: 'iam@opi.codes',
+  altEmail: 'devmontasir@gmail.com',
   phoneDisplay: '+880 1757150553',
   phoneHref: 'tel:+8801757150553',
   location: 'Dhaka, Bangladesh',
@@ -106,6 +107,7 @@ export const PROJECTS: Project[] = [
   { slug:'tea-stall', name:'Tea Stall Review Website', category:'Web', description:'Modern tea stall review website built with React and Firebase. Users can browse, review, and rate local tea stalls.', technologies:['React','Firebase','Firestore','TailwindCSS'], features:['Firebase Firestore for real-time ratings and reviews','Responsive grid layouts with TailwindCSS','Secure auth so authors can only edit their own reviews'], image:'/assets/images/tea.webp', imageAlt:'Tea Stall Review website screenshot', github:'https://github.com/MontasirOpi/TEA-STALL-REVIEW', liveDemo:'https://teareview.vercel.app/' },
   { slug:'wings-of-the-world', name:'Wings of the World', category:'Web', description:'Browser-based 3D flight simulator built with Three.js — real satellite imagery of any city, departing from Hazrat Shahjalal International Airport (VGHS), Dhaka.', technologies:['Three.js','WebGL','JavaScript','HTML5','CSS3','Web Audio API'], features:['Five selectable aircraft with distinct flight physics: F-22 Raptor, B737 airliner, Extra 330 acrobatic prop, SR-71 Blackbird, and Cessna 172','Real satellite imagery of any city, with flights departing from VGHS Dhaka','Immersive Web Audio API sound in a pure browser-based 3D experience'], github:'https://github.com/MontasirOpi/flight_game', liveDemo:'https://wings-vert.vercel.app', role:'3D web experience' },
   { slug:'cosmic-odyssey', name:'Cosmic Odyssey', category:'Web', description:'Interactive 3D WebGL astronomy portal — a deep cosmic zoom from galaxy to solar system to planets and moons, built with Three.js.', technologies:['Three.js','WebGL','JavaScript'], features:['3-tier deep cosmic zoom: Galaxy → Solar System → Planets & Moons','Sagittarius A* black hole simulator with gravitational-lensing visualization','Bilingual English + Bengali (বাংলা) interface'], github:'https://github.com/MontasirOpi/galaxy', role:'3D web experience' },
+  { slug:'esp32-network-shield', name:'ESP32 Network Shield', category:'Tools', description:'ESP-IDF firmware that turns an ESP32 into a network-wide ad blocker — DNS server with TTL cache, Bloom-filter blocklist engine covering ~74k domains, and a live WebSocket dashboard. Travel mode broadcasts its own WiFi, so any network gets ad blocking with no router changes.', technologies:['ESP-IDF','C','DNS','Bloom Filter','WebSocket','REST API'], features:['DNS server + forwarder with TTL cache; Bloom-filter blocklist engine (~73.7k domains) with atomic A/B updates','Travel mode: concurrent AP+STA, own WPA2 network, NAPT routing — plug-and-play on any WiFi','Web dashboard with REST + WebSocket live stats, per-device tracking, WPS provisioning, OTA updates'], github:'https://github.com/MontasirOpi/esp32-network-shield', role:'Embedded firmware' },
 ];
 
 export const EXPERIENCE: Experience[] = [

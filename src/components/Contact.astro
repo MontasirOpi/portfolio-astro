@@ -10,7 +10,7 @@ const p = PROFILE;
     <div class="grid">
       <div class="cta-box"><h3>Available for opportunities</h3><p>I am interested in Flutter and full-stack roles where AI-assisted delivery, Firebase backends, performance, and clean architecture matter.</p><div class="btns"><a class="btn btn-primary" href={`mailto:${p.email}`}>Email me <Icon name="arrow" /></a><a class="btn btn-ghost" href={p.cvUrl} target="_blank" rel="noopener">View CV</a></div></div>
       <ul class="details">
-        <li><Icon name="mail" /><div><span>Email</span><a href={`mailto:${p.email}`}>{p.email}</a></div></li>
+        <li><Icon name="mail" /><div><span>Email</span><a href={`mailto:${p.email}`}>{p.email} <em class="tag">primary</em></a><a class="alt" href={`mailto:${p.altEmail}`}>{p.altEmail}</a></div></li>
         <li><Icon name="phone" /><div><span>Phone</span><a href={p.phoneHref}>{p.phoneDisplay}</a></div></li>
         <li><Icon name="pin" /><div><span>Location</span><strong>{p.location}</strong></div></li>
         <li><Icon name="github" /><div><span>GitHub</span><a href={p.github} target="_blank" rel="noopener">github.com/MontasirOpi</a></div></li>
@@ -33,5 +33,7 @@ const p = PROFILE;
   .details span{font-size:0.8rem;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;font-family:var(--font-mono)}
   .details a{font-weight:600;text-decoration:none}
   .details a:hover{text-decoration:underline}
+  .details a.alt{font-weight:500;font-size:0.88rem;color:var(--text-2)}
+  .tag{font-style:normal;font-family:var(--font-mono);font-size:0.62rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;background:color-mix(in srgb, var(--accent) 14%, transparent);color:var(--accent);border-radius:999px;padding:0.12rem 0.45rem;margin-left:0.35rem;vertical-align:1px}
   .note{margin-top:1.25rem;color:var(--text-3);font-size:0.9rem}
 </style>
