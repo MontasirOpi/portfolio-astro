@@ -1,0 +1,228 @@
+---
+/* Floating guide mascot: a cute hand-drawn SVG robot that hovers over the
+   whole site, can be dragged anywhere, and gives visitors a guided tour of
+   every section. Pure CSS/SVG/JS — no external assets. */
+---
+<div id="guide" class="guide" aria-label="Site guide">
+  <div id="guide-bubble" class="bubble" hidden>
+    <button class="bubble-close" id="guide-close" type="button" aria-label="Close guide">×</button>
+    <div class="bubble-body" id="guide-body"></div>
+  </div>
+  <button id="guide-bot" class="bot" type="button" aria-label="Open site guide" aria-haspopup="dialog">
+    <svg viewBox="0 0 120 152" role="img" aria-label="Pip, the friendly guide robot">
+      <ellipse cx="60" cy="144" rx="32" ry="7" class="bot-shadow" />
+      <line x1="60" y1="20" x2="60" y2="36" class="bot-line" />
+      <circle cx="60" cy="15" r="6" class="bot-antenna" />
+      <rect x="20" y="50" width="9" height="22" rx="4.5" class="bot-ear" />
+      <rect x="91" y="50" width="9" height="22" rx="4.5" class="bot-ear" />
+      <rect x="28" y="34" width="64" height="54" rx="22" class="bot-head" />
+      <g class="bot-eyes">
+        <circle cx="48" cy="56" r="6.5" class="bot-eye" />
+        <circle cx="72" cy="56" r="6.5" class="bot-eye" />
+        <circle cx="50.2" cy="53.8" r="2.1" class="bot-spark" />
+        <circle cx="74.2" cy="53.8" r="2.1" class="bot-spark" />
+      </g>
+      <circle cx="39" cy="68" r="4.2" class="bot-blush" />
+      <circle cx="81" cy="68" r="4.2" class="bot-blush" />
+      <path d="M51 69 Q60 76 69 69" class="bot-smile" />
+      <g class="bot-arm bot-arm-left"><rect x="22" y="94" width="13" height="28" rx="6.5" class="bot-limb" /></g>
+      <g class="bot-arm bot-arm-right"><rect x="85" y="94" width="13" height="28" rx="6.5" class="bot-limb" /></g>
+      <rect x="38" y="90" width="44" height="36" rx="15" class="bot-body" />
+      <rect x="51" y="100" width="18" height="13" rx="6.5" class="bot-core" />
+    </svg>
+  </button>
+</div>
+<style>
+  .guide{position:fixed;right:1.25rem;bottom:5rem;z-index:200;touch-action:none;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.18))}
+  .guide.placed{right:auto;bottom:auto}
+  .guide.dragging{filter:drop-shadow(0 16px 26px rgba(0,0,0,0.25))}
+  .guide.dragging .bot{animation-play-state:paused}
+  .bot{display:block;width:104px;height:auto;background:none;border:0;padding:0;cursor:grab;animation:bob 3.4s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
+  .bot:active{cursor:grabbing}
+  .bot:focus-visible{outline:3px solid var(--accent);outline-offset:4px;border-radius:18px}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-9px) rotate(1.5deg)}}
+  .bot-shadow{fill:rgba(0,0,0,0.12)}
+  .bot-line{stroke:var(--text-3);stroke-width:3;stroke-linecap:round}
+  .bot-antenna{fill:var(--accent);animation:antennaPulse 2.2s ease-in-out infinite}
+  @keyframes antennaPulse{0%,100%{opacity:1}50%{opacity:0.35}}
+  .bot-ear{fill:color-mix(in srgb, var(--accent) 55%, var(--surface))}
+  .bot-head{fill:var(--surface);stroke:var(--border);stroke-width:2}
+  .bot-eye{fill:#1c2330}
+  .bot-spark{fill:#fff}
+  .bot-eyes{transform-box:fill-box;transform-origin:center;animation:blink 4.2s infinite}
+  @keyframes blink{0%,93%,100%{transform:scaleY(1)}95.5%{transform:scaleY(0.08)}}
+  .bot-blush{fill:#ff9db1;opacity:0.55}
+  .bot-smile{fill:none;stroke:#1c2330;stroke-width:2.6;stroke-linecap:round}
+  .bot-body{fill:color-mix(in srgb, var(--accent) 16%, var(--surface));stroke:var(--border);stroke-width:2}
+  .bot-core{fill:var(--accent);animation:corePulse 2.2s ease-in-out infinite}
+  @keyframes corePulse{0%,100%{opacity:1}50%{opacity:0.45}}
+  .bot-limb{fill:color-mix(in srgb, var(--accent) 45%, var(--surface));stroke:var(--border);stroke-width:1.5}
+  .bot-arm-right{transform-box:fill-box;transform-origin:50% 12%;animation:wave 3.2s ease-in-out infinite}
+  @keyframes wave{0%,100%{transform:rotate(0deg)}12%{transform:rotate(-24deg)}24%{transform:rotate(10deg)}36%{transform:rotate(-18deg)}48%,100%{transform:rotate(0deg)}}
+  /* Speech bubble */
+  .bubble{position:absolute;bottom:calc(100% + 16px);left:50%;transform:translateX(-50%) translateY(6px);width:max-content;max-width:min(320px,86vw);background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 18px 44px -12px rgba(0,0,0,0.28);padding:1rem 1.1rem 1.05rem;opacity:0;pointer-events:none;transition:opacity 0.22s var(--ease),transform 0.22s var(--ease);color:var(--text)}
+  .bubble.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+  .bubble::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:9px solid transparent;border-top-color:var(--surface);filter:drop-shadow(0 2px 1px rgba(0,0,0,0.06))}
+  .bubble[hidden]{display:none}
+  .bubble-close{position:absolute;top:0.35rem;right:0.55rem;background:none;border:0;font-size:1.25rem;line-height:1;color:var(--text-3);cursor:pointer;padding:0.35rem;min-width:38px;min-height:38px}
+  .bubble-close:hover{color:var(--text)}
+  .bubble-body{font-size:0.9rem;line-height:1.55}
+  .bubble-body p{margin:0 0 0.7rem}
+  .bubble-body p:last-child{margin-bottom:0}
+  .bubble-name{font-family:var(--font-display);font-weight:700}
+  .bubble-actions{display:flex;flex-wrap:wrap;gap:0.45rem;margin-top:0.75rem}
+  .bubble-actions button{font:inherit;font-size:0.82rem;font-weight:600;border:1px solid var(--border);background:var(--surface-2);color:var(--text);border-radius:999px;padding:0.5rem 0.9rem;cursor:pointer;min-height:38px;transition:border-color 0.2s var(--ease),transform 0.2s var(--ease)}
+  .bubble-actions button:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .bubble-actions button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .tour-nav{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;margin-top:0.8rem}
+  .tour-nav .step{font-family:var(--font-mono);font-size:0.72rem;color:var(--text-3)}
+  .tour-nav .row{display:flex;gap:0.45rem}
+  /* Section highlight while touring */
+  :global(.guide-highlight){outline:2px dashed var(--accent)!important;outline-offset:10px;border-radius:8px;animation:guidePulse 1.6s ease-in-out infinite}
+  @keyframes guidePulse{0%,100%{outline-color:var(--accent)}50%{outline-color:color-mix(in srgb, var(--accent) 30%, transparent)}}
+  @media (max-width:640px){
+    .guide{right:0.9rem;bottom:4.5rem}
+    .bot{width:80px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bot,.bot-eyes,.bot-antenna,.bot-core,.bot-arm-right,:global(.guide-highlight){animation:none!important}
+    .bubble{transition:none}
+  }
+  @media print{.guide{display:none}}
+</style>
+<script>
+  (() => {
+    const guide = document.getElementById('guide');
+    const bot = document.getElementById('guide-bot');
+    const bubble = document.getElementById('guide-bubble');
+    const body = document.getElementById('guide-body');
+    const closeBtn = document.getElementById('guide-close');
+    if (!guide || !bot || !bubble || !body) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const GW = () => guide.offsetWidth, GH = () => guide.offsetHeight;
+
+    /* ---------- draggable anywhere ---------- */
+    let drag = null;
+    const clamp = (x, y) => ({
+      x: Math.min(Math.max(x, 8), window.innerWidth - GW() - 8),
+      y: Math.min(Math.max(y, 8), window.innerHeight - GH() - 8),
+    });
+    const place = (x, y, animate = true) => {
+      const c = clamp(x, y);
+      guide.classList.add('placed');
+      guide.style.transition = animate && !reduced ? 'left 0.45s var(--ease), top 0.45s var(--ease)' : 'none';
+      guide.style.left = c.x + 'px';
+      guide.style.top = c.y + 'px';
+    };
+    const resetPos = () => {
+      guide.classList.remove('placed');
+      guide.style.left = ''; guide.style.top = ''; guide.style.transition = '';
+    };
+    bot.addEventListener('pointerdown', (e) => {
+      const r = guide.getBoundingClientRect();
+      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, moved: false, sx: e.clientX, sy: e.clientY };
+      guide.classList.add('dragging');
+      guide.style.transition = 'none';
+      bot.setPointerCapture(e.pointerId);
+    });
+    bot.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      if (Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 7) drag.moved = true;
+      if (drag.moved) place(e.clientX - drag.dx, e.clientY - drag.dy, false);
+    });
+    const endDrag = () => { drag = null; guide.classList.remove('dragging'); };
+    bot.addEventListener('pointerup', (e) => {
+      const wasDrag = drag && drag.moved;
+      endDrag();
+      if (!wasDrag) toggleBubble();
+    });
+    bot.addEventListener('pointercancel', endDrag);
+
+    /* ---------- bubble content ---------- */
+    const esc = (s) => s.replace(/</g, '&lt;');
+    const showBubble = (html) => { body.innerHTML = html; bubble.hidden = false; requestAnimationFrame(() => bubble.classList.add('show')); wireActions(); };
+    const hideBubble = () => { bubble.classList.remove('show'); setTimeout(() => { bubble.hidden = true; }, 240); };
+    const toggleBubble = () => {
+      if (!bubble.hidden && bubble.classList.contains('show')) { hideBubble(); return; }
+      if (tour.i >= 0) { showBubble(tourHtml()); return; }
+      showBubble(menuHtml());
+    };
+    const menuHtml = () => `
+      <p><span class="bubble-name">Hi, I'm Pip!</span> 🤖<br>Opi's little guide-bot. I can show you around the whole site.</p>
+      <div class="bubble-actions">
+        <button type="button" class="primary" data-act="tour">✨ Take the tour</button>
+        <button type="button" data-act="goto" data-to="#projects">📂 Projects</button>
+        <button type="button" data-act="goto" data-to="#contact">💬 Contact</button>
+        <button type="button" data-act="hide">Maybe later</button>
+      </div>`;
+    const tourHtml = () => {
+      const s = TOUR[tour.i];
+      return `
+      <p><span class="bubble-name">${esc(s.title)}</span><br>${esc(s.text)}</p>
+      <div class="tour-nav">
+        <span class="step">${tour.i + 1} / ${TOUR.length}</span>
+        <span class="row">
+          ${tour.i > 0 ? '<button type="button" data-act="back">← Back</button>' : ''}
+          <button type="button" class="primary" data-act="next">${tour.i === TOUR.length - 1 ? 'Finish 🎉' : 'Next →'}</button>
+          <button type="button" data-act="skip">Skip</button>
+        </span>
+      </div>`;
+    };
+    const wireActions = () => {
+      body.querySelectorAll('[data-act]').forEach((b) => {
+        b.addEventListener('click', () => {
+          const act = b.getAttribute('data-act');
+          if (act === 'tour') startTour();
+          else if (act === 'goto') { endTour(true); scrollToSel(b.getAttribute('data-to')); hideBubble(); }
+          else if (act === 'hide') hideBubble();
+          else if (act === 'next') stepTour(tour.i + 1);
+          else if (act === 'back') stepTour(tour.i - 1);
+          else if (act === 'skip') { endTour(); hideBubble(); resetPos(); }
+        });
+      });
+    };
+    closeBtn?.addEventListener('click', () => { if (tour.i >= 0) { endTour(); resetPos(); } hideBubble(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !bubble.hidden) { if (tour.i >= 0) { endTour(); resetPos(); } hideBubble(); }
+    });
+
+    /* ---------- guided tour ---------- */
+    const TOUR = [
+      { sel: '#top', title: 'Welcome! 👋', text: 'This is Fahim Montasir Opi — Flutter developer and agentic AI developer from Dhaka, building production mobile apps.' },
+      { sel: '#about', title: 'About Opi', text: 'A quick intro: clean-architecture Flutter apps on the Play Store and App Store, plus AI agents and Firebase backends.' },
+      { sel: '#skills', title: 'Skills 🛠️', text: 'Tap any group to expand it — 62 skills across mobile, AI, backend, databases, DevOps and travel tech.' },
+      { sel: '#ai', title: 'Agentic AI 🤖', text: 'My favourite part! Opi designs AI agents — planning loops, tool calling and multi-agent orchestration.' },
+      { sel: '#experience', title: 'Experience 💼', text: 'Where Opi has worked — currently Associate Software Engineer at Innovate Solutions.' },
+      { sel: '#projects', title: 'Projects 📂', text: '19 real projects with real links — production travel apps, on-device AI, open-source tools and 3D web toys.' },
+      { sel: '#workflow', title: 'Workflow ⚙️', text: 'How Opi ships: requirements, reusable components, Firebase backends, AI-assisted delivery, testing and polish.' },
+      { sel: '#contact', title: "Say hello! 💬", text: "That's the whole tour! You'll find Opi's email, GitHub and LinkedIn here. Thanks for visiting!" },
+    ];
+    const tour = { i: -1 };
+    const scrollToSel = (sel) => {
+      const el = document.querySelector(sel);
+      if (el) el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+      return el;
+    };
+    const highlight = (el) => {
+      document.querySelectorAll('.guide-highlight').forEach((n) => n.classList.remove('guide-highlight'));
+      if (el) el.classList.add('guide-highlight');
+    };
+    const placeNear = (el) => {
+      const r = el.getBoundingClientRect();
+      place(r.right - GW() - 16, r.top + 16);
+    };
+    function startTour() { stepTour(0); }
+    function stepTour(i) {
+      if (i >= TOUR.length) { endTour(); resetPos(); showBubble('<p><span class="bubble-name">Tour complete! 🎉</span><br>Hope you enjoyed the walkthrough. Ping Opi from the contact section!</p><div class="bubble-actions"><button type="button" class="primary" data-act="hide">Done</button></div>'); return; }
+      tour.i = i;
+      const s = TOUR[i];
+      const el = scrollToSel(s.sel);
+      highlight(el);
+      if (el && !reduced) setTimeout(() => placeNear(el), 450); else if (el) placeNear(el);
+      showBubble(tourHtml());
+    }
+    function endTour(silent) { tour.i = -1; highlight(null); if (!silent) resetPos(); }
+
+    window.addEventListener('resize', () => { if (guide.classList.contains('placed')) { const r = guide.getBoundingClientRect(); place(r.left, r.top, false); } });
+  })();
+</script>
