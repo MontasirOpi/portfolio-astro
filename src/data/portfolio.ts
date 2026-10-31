@@ -16,8 +16,8 @@ export const PROFILE = {
   shortName: 'Opi',
   brand: 'OPI',
   title: 'Associate Software Engineer',
-  roleLine: 'Flutter Developer & AI-Assisted Software Engineer',
-  heroIntro: 'Flutter developer building production mobile apps, using AI-assisted workflows, with Firebase + Node.js backends — and OTA travel systems as one specialty, not the whole story.',
+  roleLine: 'Flutter Developer · Agentic AI Developer',
+  heroIntro: 'Flutter developer building production mobile apps and agentic AI systems, using AI-assisted workflows, with Firebase + Node.js backends — and OTA travel systems as one specialty, not the whole story.',
   email: 'iam@opi.codes',
   altEmail: 'devmontasir@gmail.com',
   phoneDisplay: '+880 1757150553',
@@ -32,7 +32,7 @@ export const PROFILE = {
 
 export const ABOUT_PARAGRAPHS = [
   'I am a Flutter developer. I build production mobile apps with clean architecture and Riverpod, GetX, and BLoC — and ship and maintain them on Google Play and the App Store, with ongoing attention to performance, UX, and maintainability.',
-  'I am an expert in AI-assisted development. I use agentic workflows, prompt engineering, function and tool calling, MCP, and AI-assisted review and diagnostics — with Cursor, GitHub Copilot, Claude, GPT-4o, and Gemini — to deliver faster without giving up code quality. AI speeds up the work; human review decides what ships.',
+  'I am an agentic AI developer. I design autonomous and semi-autonomous agents — planning loops, tool and function calling, MCP integrations, and multi-agent collaboration — alongside AI-assisted development with Cursor, GitHub Copilot, Claude, GPT-4o, and Gemini, to deliver faster without giving up code quality. AI speeds up the work; human review decides what ships.',
   'On the backend, I work with Firebase — Auth, Cloud Firestore, Cloud Functions, Cloud Messaging, Storage, and Hosting — plus Node.js and TypeScript REST services, and Supabase and PostgreSQL where they fit.',
   'OTA travel is one domain I apply this in: flight, hotel, transfer, insurance, and eSIM booking flows. It is a specialty, not the whole story.',
 ];
@@ -56,7 +56,9 @@ export const SKILL_GROUPS: SkillGroup[] = [
     { label: 'Agentic AI Workflows' }, { label: 'AI Agents in Flutter', icon: 'flutter' },
     { label: 'On-device AI (ONNX Runtime)', icon: 'onnx' }, { label: 'Prompt Engineering' },
     { label: 'LLM Function & Tool Calling' }, { label: 'Model Context Protocol (MCP)', icon: 'anthropic' },
-    { label: 'Multi-Agent Systems' }, { label: 'AI Diagnostics & Code Review' },
+    { label: 'Multi-Agent Systems' }, { label: 'Agent Orchestration' }, { label: 'MCP Servers & Custom Tools' },
+    { label: 'Agentic RAG Pipelines' }, { label: 'Agent Guardrails & Evaluation' },
+    { label: 'AI Diagnostics & Code Review' },
     { label: 'Cursor IDE', icon: 'cursor' }, { label: 'GitHub Copilot', icon: 'githubcopilot' },
     { label: 'Claude 3.5 Sonnet', icon: 'anthropic' }, { label: 'GPT-4o / OpenAI' },
     { label: 'Gemini Pro', icon: 'googlegemini' }, { label: 'OpenRouter APIs', icon: 'openrouter' },
@@ -85,6 +87,7 @@ export const AI_GROUPS: AiGroup[] = [
   { title: 'AI-assisted development', description: 'My daily expert workflow: write, debug, refactor, and review code faster with AI — with human review before shipping.', items: ['Cursor IDE','GitHub Copilot','AI-assisted coding, debugging & refactoring','AI-assisted code review','Documentation generation'] },
   { title: 'AI integration & APIs', description: 'Patterns I use in Flutter and backend services: agents, tools, and models wired into real features.', items: ['LLM API integration (OpenRouter, OpenAI, Gemini, Claude)','Prompt engineering','LLM function & tool calling','Model Context Protocol (MCP)','Local LLM deployment — Ollama / Local Llama','Agentic workflows & tool orchestration'] },
   { title: 'Engineering workflows', description: 'AI across the delivery loop — requirements, implementation, testing, and maintenance.', items: ['AI-assisted test generation','Debugging & root-cause analysis','AI diagnostics & code review','Development workflow automation','Reusable components & clean architecture'] },
+  { title: 'Agentic AI systems', description: 'Designing autonomous and semi-autonomous agents — planning, tool use, and multi-step task execution with human oversight.', items: ['Agent planning & ReAct-style reasoning loops','LLM tool & function calling orchestration','Multi-agent collaboration patterns','MCP servers & custom tool integrations','Memory, context & state management for agents','Guardrails, evaluation & human-in-the-loop review'] },
 ];
 
 export const PROJECTS: Project[] = [
@@ -127,6 +130,7 @@ export const WORKFLOW = [
 export const NAV_LINKS = [
   { label:'About', href:'#about' },
   { label:'Skills', href:'#skills' },
+  { label:'AI', href:'#ai' },
   { label:'Projects', href:'#projects' },
   { label:'Experience', href:'#experience' },
   { label:'Contact', href:'#contact' },

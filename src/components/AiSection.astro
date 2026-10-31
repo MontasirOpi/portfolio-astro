@@ -4,7 +4,7 @@ import SectionHeading from './SectionHeading.astro';
 ---
 <section class="section" id="ai">
   <div class="container">
-    <SectionHeading eyebrow="AI engineering" title="Expert in AI-assisted engineering" subtitle="AI is how I ship faster — for coding, integration, and review. Tools listed are those named in my source portfolio." />
+    <SectionHeading eyebrow="Agentic AI" title="Agentic AI developer" subtitle="I design and build AI agents — planning loops, tool calling, and multi-agent orchestration — wired into real Flutter apps and backends. Tools listed are those named in my source portfolio." />
     <div class="grid">{AI_GROUPS.map((g, idx) => <article><p class="num">{String(idx + 1).padStart(2, '0')}</p><h3>{g.title}</h3><p>{g.description}</p><ul>{g.items.map((i) => <li>{i}</li>)}</ul></article>)}</div>
     <p class="shipped" data-reveal>Shipped: <a href="https://github.com/MontasirOpi/TypeFix-Ai" target="_blank" rel="noopener">TypeFix AI</a> — a privacy-first, fully offline writing assistant for Android (Kotlin + Flutter) running ONNX Runtime Mobile on-device, with zero cloud calls.</p>
     <p class="note">Tools and workflows I use daily — listed items are those from my source portfolio, not invented claims.</p>
