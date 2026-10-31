@@ -140,10 +140,17 @@
     const pickVoice = () => {
       if (!synth) return;
       const vs = synth.getVoices();
-      voice.picked = vs.find((v) => /female|samantha|zira|tessa|fiona|veena|kanya|aria/i.test(v.name))
-        || vs.find((v) => /google us english/i.test(v.name))
-        || vs.find((v) => v.lang && v.lang.toLowerCase().startsWith('en'))
-        || null;
+      // Prefer the most natural/human-sounding voices first (neural where available).
+      const natural = [
+        (v) => /google us english/i.test(v.name),
+        (v) => /aria|jenny/i.test(v.name) && /microsoft/i.test(v.name),
+        (v) => /samantha/i.test(v.name),
+        (v) => /zira/i.test(v.name),
+        (v) => /female/i.test(v.name),
+        (v) => v.lang && v.lang.toLowerCase().startsWith('en'),
+      ];
+      voice.picked = null;
+      for (const test of natural) { voice.picked = vs.find(test) || null; if (voice.picked) break; }
     };
     if (synth) { pickVoice(); synth.onvoiceschanged = pickVoice; }
     const cleanSpeech = (s) => s.replace(/[^a-zA-Z0-9\s.,!?'"-]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -152,7 +159,7 @@
       synth.cancel();
       const u = new SpeechSynthesisUtterance(cleanSpeech(text));
       if (voice.picked) u.voice = voice.picked;
-      u.rate = 1; u.pitch = 1.25;
+      u.rate = 0.95; u.pitch = 1.05; // near-natural pace and tone, not chipmunk-like
       synth.speak(u);
     };
     const stopSpeak = () => { if (synth) synth.cancel(); };
