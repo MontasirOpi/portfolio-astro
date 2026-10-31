@@ -5,6 +5,7 @@
 ---
 <div id="guide" class="guide" aria-label="Site guide">
   <div id="guide-bubble" class="bubble" hidden>
+    <button class="voice-toggle" id="guide-voice" type="button" aria-label="Toggle voice narration" aria-pressed="true">🔊</button>
     <button class="bubble-close" id="guide-close" type="button" aria-label="Close guide">×</button>
     <div class="bubble-body" id="guide-body"></div>
   </div>
@@ -89,6 +90,8 @@
   .bubble[hidden]{display:none}
   .bubble-close{position:absolute;top:0.35rem;right:0.55rem;background:none;border:0;font-size:1.25rem;line-height:1;color:var(--text-3);cursor:pointer;padding:0.35rem;min-width:38px;min-height:38px}
   .bubble-close:hover{color:var(--text)}
+  .voice-toggle{position:absolute;top:0.35rem;left:0.55rem;background:none;border:0;font-size:1.05rem;cursor:pointer;padding:0.35rem;min-width:38px;min-height:38px}
+  .voice-toggle[aria-pressed="false"]{filter:grayscale(1);opacity:0.5}
   .bubble-body{font-size:0.9rem;line-height:1.55}
   .bubble-body p{margin:0 0 0.7rem}
   .bubble-body p:last-child{margin-bottom:0}
@@ -124,9 +127,45 @@
     const bubble = document.getElementById('guide-bubble');
     const body = document.getElementById('guide-body');
     const closeBtn = document.getElementById('guide-close');
+    const voiceBtn = document.getElementById('guide-voice');
     if (!guide || !bot || !bubble || !body) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const GW = () => guide.offsetWidth, GH = () => guide.offsetHeight;
+
+    /* ---------- voice narration (Web Speech API) ---------- */
+    const synth = ('speechSynthesis' in window) ? window.speechSynthesis : null;
+    const voice = { on: true, picked: null };
+    try { voice.on = localStorage.getItem('murphy-voice') !== 'off'; } catch (e) {}
+    if (!synth && voiceBtn) voiceBtn.style.display = 'none';
+    const pickVoice = () => {
+      if (!synth) return;
+      const vs = synth.getVoices();
+      voice.picked = vs.find((v) => /female|samantha|zira|tessa|fiona|veena|kanya|aria/i.test(v.name))
+        || vs.find((v) => /google us english/i.test(v.name))
+        || vs.find((v) => v.lang && v.lang.toLowerCase().startsWith('en'))
+        || null;
+    };
+    if (synth) { pickVoice(); synth.onvoiceschanged = pickVoice; }
+    const cleanSpeech = (s) => s.replace(/[^a-zA-Z0-9\s.,!?'"-]/g, ' ').replace(/\s+/g, ' ').trim();
+    const speak = (text) => {
+      if (!synth || !voice.on) return;
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(cleanSpeech(text));
+      if (voice.picked) u.voice = voice.picked;
+      u.rate = 1; u.pitch = 1.25;
+      synth.speak(u);
+    };
+    const stopSpeak = () => { if (synth) synth.cancel(); };
+    const setVoice = (on) => {
+      voice.on = on;
+      try { localStorage.setItem('murphy-voice', on ? 'on' : 'off'); } catch (e) {}
+      if (voiceBtn) { voiceBtn.setAttribute('aria-pressed', on ? 'true' : 'false'); voiceBtn.textContent = on ? '🔊' : '🔇'; }
+      if (!on) stopSpeak();
+      else if (tour.i >= 0) speak(TOUR[tour.i].title + '. ' + TOUR[tour.i].text);
+    };
+    voiceBtn?.addEventListener('click', (e) => { e.stopPropagation(); setVoice(!voice.on); });
+    // Sync the toggle UI without speaking (tour is declared further below).
+    if (voiceBtn) { voiceBtn.setAttribute('aria-pressed', voice.on ? 'true' : 'false'); voiceBtn.textContent = voice.on ? '🔊' : '🔇'; }
 
     /* ---------- draggable anywhere ---------- */
     let drag = null;
@@ -181,7 +220,7 @@
       }
     };
     const showBubble = (html) => { body.innerHTML = html; bubble.hidden = false; requestAnimationFrame(() => { bubble.classList.add('show'); fitBubble(); }); wireActions(); };
-    const hideBubble = () => { bubble.classList.remove('show'); setTimeout(() => { bubble.hidden = true; }, 240); };
+    const hideBubble = () => { stopSpeak(); bubble.classList.remove('show'); setTimeout(() => { bubble.hidden = true; }, 240); };
     const toggleBubble = () => {
       if (!bubble.hidden && bubble.classList.contains('show')) { hideBubble(); return; }
       if (tour.i >= 0) { showBubble(tourHtml()); return; }
@@ -256,13 +295,14 @@
     };
     function startTour() { stepTour(0); }
     function stepTour(i) {
-      if (i >= TOUR.length) { endTour(); resetPos(); showBubble('<p><span class="bubble-name">Tour complete! 🎉</span><br>Hope you enjoyed the walkthrough. Ping Opi from the contact section!</p><div class="bubble-actions"><button type="button" class="primary" data-act="hide">Done</button></div>'); return; }
+      if (i >= TOUR.length) { endTour(); resetPos(); showBubble('<p><span class="bubble-name">Tour complete! 🎉</span><br>Hope you enjoyed the walkthrough. Ping Opi from the contact section!</p><div class="bubble-actions"><button type="button" class="primary" data-act="hide">Done</button></div>'); speak('Tour complete! Hope you enjoyed the walkthrough.'); return; }
       tour.i = i;
       const s = TOUR[i];
       const el = scrollToSel(s.sel);
       highlight(el);
       if (el && !reduced) setTimeout(() => placeNear(el), 450); else if (el) placeNear(el);
       showBubble(tourHtml());
+      speak(s.title + '. ' + s.text);
     }
     function endTour(silent) { tour.i = -1; highlight(null); if (!silent) resetPos(); }
 
