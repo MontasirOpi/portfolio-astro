@@ -63,6 +63,9 @@
   .bubble{position:absolute;bottom:calc(100% + 16px);left:50%;transform:translateX(-50%) translateY(6px);width:max-content;max-width:min(320px,86vw);background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 18px 44px -12px rgba(0,0,0,0.28);padding:1rem 1.1rem 1.05rem;opacity:0;pointer-events:none;transition:opacity 0.22s var(--ease),transform 0.22s var(--ease);color:var(--text)}
   .bubble.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
   .bubble::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:9px solid transparent;border-top-color:var(--surface);filter:drop-shadow(0 2px 1px rgba(0,0,0,0.06))}
+  /* Flipped below the mascot when there is no room above (e.g. tour near the top edge). */
+  .bubble.below{bottom:auto;top:calc(100% + 16px)}
+  .bubble.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:var(--surface);filter:drop-shadow(0 -2px 1px rgba(0,0,0,0.06))}
   .bubble[hidden]{display:none}
   .bubble-close{position:absolute;top:0.35rem;right:0.55rem;background:none;border:0;font-size:1.25rem;line-height:1;color:var(--text-3);cursor:pointer;padding:0.35rem;min-width:38px;min-height:38px}
   .bubble-close:hover{color:var(--text)}
@@ -84,6 +87,10 @@
     .guide{right:0.9rem;bottom:4.5rem}
     .bot{width:80px}
   }
+  /* Desktop has a 136px fixed side rail at the right edge — keep the mascot clear of it. */
+  @media (min-width:1100px){
+    .guide{right:calc(136px + 1.25rem)}
+  }
   @media (prefers-reduced-motion: reduce){
     .bot,.bot-eyes,.bot-antenna,.bot-core,.bot-arm-right,:global(.guide-highlight){animation:none!important}
     .bubble{transition:none}
@@ -103,10 +110,13 @@
 
     /* ---------- draggable anywhere ---------- */
     let drag = null;
-    const clamp = (x, y) => ({
-      x: Math.min(Math.max(x, 8), window.innerWidth - GW() - 8),
-      y: Math.min(Math.max(y, 8), window.innerHeight - GH() - 8),
-    });
+    const clamp = (x, y) => {
+      const rail = window.innerWidth >= 1100 ? 144 : 8; // keep clear of the desktop side rail
+      return {
+        x: Math.min(Math.max(x, 8), window.innerWidth - GW() - rail),
+        y: Math.min(Math.max(y, 8), window.innerHeight - GH() - 8),
+      };
+    };
     const place = (x, y, animate = true) => {
       const c = clamp(x, y);
       guide.classList.add('placed');
@@ -140,7 +150,17 @@
 
     /* ---------- bubble content ---------- */
     const esc = (s) => s.replace(/</g, '&lt;');
-    const showBubble = (html) => { body.innerHTML = html; bubble.hidden = false; requestAnimationFrame(() => bubble.classList.add('show')); wireActions(); };
+    /* Keep the bubble inside the viewport: flip below the mascot when there is no room above. */
+    const fitBubble = () => {
+      bubble.classList.remove('below');
+      let r = bubble.getBoundingClientRect();
+      if (r.top < 8) {
+        bubble.classList.add('below');
+        r = bubble.getBoundingClientRect();
+        if (r.bottom > window.innerHeight - 8) bubble.classList.remove('below');
+      }
+    };
+    const showBubble = (html) => { body.innerHTML = html; bubble.hidden = false; requestAnimationFrame(() => { bubble.classList.add('show'); fitBubble(); }); wireActions(); };
     const hideBubble = () => { bubble.classList.remove('show'); setTimeout(() => { bubble.hidden = true; }, 240); };
     const toggleBubble = () => {
       if (!bubble.hidden && bubble.classList.contains('show')) { hideBubble(); return; }
