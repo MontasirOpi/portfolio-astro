@@ -1,7 +1,7 @@
 ---
-/* Floating guide mascot: a cute hand-drawn SVG robot that hovers over the
-   whole site, can be dragged anywhere, and gives visitors a guided tour of
-   every section. Pure CSS/SVG/JS — no external assets. */
+/* Floating guide mascot "Murphy": a cute hand-drawn animated girl's face that
+   hovers over the whole site, can be dragged anywhere, and gives visitors a
+   guided tour of every section. Pure CSS/SVG/JS — no external assets. */
 ---
 <div id="guide" class="guide" aria-label="Site guide">
   <div id="guide-bubble" class="bubble" hidden>
@@ -9,26 +9,45 @@
     <div class="bubble-body" id="guide-body"></div>
   </div>
   <button id="guide-bot" class="bot" type="button" aria-label="Open site guide" aria-haspopup="dialog">
-    <svg viewBox="0 0 120 152" role="img" aria-label="Pip, the friendly guide robot">
-      <ellipse cx="60" cy="144" rx="32" ry="7" class="bot-shadow" />
-      <line x1="60" y1="20" x2="60" y2="36" class="bot-line" />
-      <circle cx="60" cy="15" r="6" class="bot-antenna" />
-      <rect x="20" y="50" width="9" height="22" rx="4.5" class="bot-ear" />
-      <rect x="91" y="50" width="9" height="22" rx="4.5" class="bot-ear" />
-      <rect x="28" y="34" width="64" height="54" rx="22" class="bot-head" />
-      <g class="bot-eyes">
-        <circle cx="48" cy="56" r="6.5" class="bot-eye" />
-        <circle cx="72" cy="56" r="6.5" class="bot-eye" />
-        <circle cx="50.2" cy="53.8" r="2.1" class="bot-spark" />
-        <circle cx="74.2" cy="53.8" r="2.1" class="bot-spark" />
+    <svg viewBox="0 0 120 152" role="img" aria-label="Murphy, the friendly guide">
+      <ellipse cx="60" cy="144" rx="30" ry="7" class="m-shadow" />
+      <!-- back hair -->
+      <ellipse cx="60" cy="80" rx="41" ry="60" class="m-hair" />
+      <!-- side strands framing the face -->
+      <ellipse cx="33" cy="96" rx="11" ry="28" class="m-hair" />
+      <ellipse cx="87" cy="96" rx="11" ry="28" class="m-hair" />
+      <!-- waving hand -->
+      <g class="m-hand">
+        <circle cx="100" cy="100" r="10" class="m-skin" />
+        <path d="M95.5 92.5 l-3 -7.5 M100 91.5 l0 -8 M104.5 92.5 l3 -7.5" class="m-finger" />
       </g>
-      <circle cx="39" cy="68" r="4.2" class="bot-blush" />
-      <circle cx="81" cy="68" r="4.2" class="bot-blush" />
-      <path d="M51 69 Q60 76 69 69" class="bot-smile" />
-      <g class="bot-arm bot-arm-left"><rect x="22" y="94" width="13" height="28" rx="6.5" class="bot-limb" /></g>
-      <g class="bot-arm bot-arm-right"><rect x="85" y="94" width="13" height="28" rx="6.5" class="bot-limb" /></g>
-      <rect x="38" y="90" width="44" height="36" rx="15" class="bot-body" />
-      <rect x="51" y="100" width="18" height="13" rx="6.5" class="bot-core" />
+      <!-- face -->
+      <circle cx="60" cy="62" r="30" class="m-skin" />
+      <!-- fringe / bangs -->
+      <path d="M31 56 Q33 30 60 28 Q87 30 89 56 Q81 45 75 54 Q69 43 61 52 Q53 43 47 54 Q41 45 31 56 Z" class="m-hair" />
+      <!-- bow -->
+      <g class="m-bow" transform="translate(87,32) rotate(12)">
+        <path d="M0 0 L-15 -9 L-15 9 Z" class="m-bowwing" />
+        <path d="M0 0 L15 -9 L15 9 Z" class="m-bowwing" />
+        <circle cx="0" cy="0" r="4.6" class="m-bowknot" />
+      </g>
+      <!-- eyes -->
+      <g class="m-eyes">
+        <ellipse cx="47" cy="63" rx="6.5" ry="8" class="m-eyewhite" />
+        <ellipse cx="73" cy="63" rx="6.5" ry="8" class="m-eyewhite" />
+        <circle cx="47" cy="64.5" r="3.8" class="m-pupil" />
+        <circle cx="73" cy="64.5" r="3.8" class="m-pupil" />
+        <circle cx="48.4" cy="62.6" r="1.5" class="m-spark" />
+        <circle cx="74.4" cy="62.6" r="1.5" class="m-spark" />
+      </g>
+      <!-- lashes -->
+      <path d="M40.5 58.5 l-3.8 -2.6 M79.5 58.5 l3.8 -2.6" class="m-lash" />
+      <!-- blush -->
+      <ellipse cx="40" cy="72" rx="5" ry="3.4" class="m-blush" />
+      <ellipse cx="80" cy="72" rx="5" ry="3.4" class="m-blush" />
+      <!-- smile -->
+      <path d="M52 76 Q60 88 68 76 Q60 80.5 52 76 Z" class="m-mouth" />
+      <ellipse cx="60" cy="80.6" rx="3" ry="1.9" class="m-tongue" />
     </svg>
   </button>
 </div>
@@ -41,24 +60,25 @@
   .bot:active{cursor:grabbing}
   .bot:focus-visible{outline:3px solid var(--accent);outline-offset:4px;border-radius:18px}
   @keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-9px) rotate(1.5deg)}}
-  .bot-shadow{fill:rgba(0,0,0,0.12)}
-  .bot-line{stroke:var(--text-3);stroke-width:3;stroke-linecap:round}
-  .bot-antenna{fill:var(--accent);animation:antennaPulse 2.2s ease-in-out infinite}
-  @keyframes antennaPulse{0%,100%{opacity:1}50%{opacity:0.35}}
-  .bot-ear{fill:color-mix(in srgb, var(--accent) 55%, var(--surface))}
-  .bot-head{fill:var(--surface);stroke:var(--border);stroke-width:2}
-  .bot-eye{fill:#1c2330}
-  .bot-spark{fill:#fff}
-  .bot-eyes{transform-box:fill-box;transform-origin:center;animation:blink 4.2s infinite}
+  .m-shadow{fill:rgba(0,0,0,0.12)}
+  .m-hair{fill:#5a3a26}
+  .m-skin{fill:#ffd9b8}
+  .m-finger{stroke:#e8b48c;stroke-width:2.4;stroke-linecap:round;fill:none}
+  .m-bowwing{fill:var(--accent)}
+  .m-bowknot{fill:color-mix(in srgb, var(--accent) 70%, #1c2330)}
+  .m-bow{transform-box:fill-box;transform-origin:center;animation:bowSway 3.4s ease-in-out infinite}
+  @keyframes bowSway{0%,100%{transform:translate(87px,32px) rotate(12deg)}50%{transform:translate(87px,32px) rotate(4deg)}}
+  .m-eyewhite{fill:#fff}
+  .m-pupil{fill:#2b2118}
+  .m-spark{fill:#fff}
+  .m-eyes{transform-box:fill-box;transform-origin:center;animation:blink 4.2s infinite}
   @keyframes blink{0%,93%,100%{transform:scaleY(1)}95.5%{transform:scaleY(0.08)}}
-  .bot-blush{fill:#ff9db1;opacity:0.55}
-  .bot-smile{fill:none;stroke:#1c2330;stroke-width:2.6;stroke-linecap:round}
-  .bot-body{fill:color-mix(in srgb, var(--accent) 16%, var(--surface));stroke:var(--border);stroke-width:2}
-  .bot-core{fill:var(--accent);animation:corePulse 2.2s ease-in-out infinite}
-  @keyframes corePulse{0%,100%{opacity:1}50%{opacity:0.45}}
-  .bot-limb{fill:color-mix(in srgb, var(--accent) 45%, var(--surface));stroke:var(--border);stroke-width:1.5}
-  .bot-arm-right{transform-box:fill-box;transform-origin:50% 12%;animation:wave 3.2s ease-in-out infinite}
-  @keyframes wave{0%,100%{transform:rotate(0deg)}12%{transform:rotate(-24deg)}24%{transform:rotate(10deg)}36%{transform:rotate(-18deg)}48%,100%{transform:rotate(0deg)}}
+  .m-lash{stroke:#2b2118;stroke-width:2;stroke-linecap:round;fill:none}
+  .m-blush{fill:#ff9db1;opacity:0.6}
+  .m-mouth{fill:#a14e4e}
+  .m-tongue{fill:#ef9a9a}
+  .m-hand{transform-box:fill-box;transform-origin:50% 88%;animation:wave 3.2s ease-in-out infinite}
+  @keyframes wave{0%,100%{transform:rotate(0deg)}12%{transform:rotate(-26deg)}24%{transform:rotate(12deg)}36%{transform:rotate(-18deg)}48%,100%{transform:rotate(0deg)}}
   /* Speech bubble */
   .bubble{position:absolute;bottom:calc(100% + 16px);left:50%;transform:translateX(-50%) translateY(6px);width:max-content;max-width:min(320px,86vw);background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 18px 44px -12px rgba(0,0,0,0.28);padding:1rem 1.1rem 1.05rem;opacity:0;pointer-events:none;transition:opacity 0.22s var(--ease),transform 0.22s var(--ease);color:var(--text)}
   .bubble.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
@@ -92,7 +112,7 @@
     .guide{right:calc(136px + 1.25rem)}
   }
   @media (prefers-reduced-motion: reduce){
-    .bot,.bot-eyes,.bot-antenna,.bot-core,.bot-arm-right,:global(.guide-highlight){animation:none!important}
+    .bot,.m-eyes,.m-hand,.m-bow,:global(.guide-highlight){animation:none!important}
     .bubble{transition:none}
   }
   @media print{.guide{display:none}}
@@ -168,7 +188,7 @@
       showBubble(menuHtml());
     };
     const menuHtml = () => `
-      <p><span class="bubble-name">Hi, I'm Pip!</span> 🤖<br>Opi's little guide-bot. I can show you around the whole site.</p>
+      <p><span class="bubble-name">Hi, I'm Murphy!</span> 💁‍♀️<br>Opi's friendly guide. I can show you around the whole site.</p>
       <div class="bubble-actions">
         <button type="button" class="primary" data-act="tour">✨ Take the tour</button>
         <button type="button" data-act="goto" data-to="#projects">📂 Projects</button>
