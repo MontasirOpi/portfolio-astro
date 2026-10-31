@@ -249,7 +249,10 @@
     };
     const placeNear = (el) => {
       const r = el.getBoundingClientRect();
-      place(r.right - GW() - 16, r.top + 16);
+      // Keep the narration bubble (max 320px wide, centered on the mascot) clear of the desktop side rail too.
+      const rail = window.innerWidth >= 1100 ? 144 : 0;
+      let x = Math.min(r.right - GW() - 16, window.innerWidth - rail - 170 - GW() / 2);
+      place(x, r.top + 16);
     };
     function startTour() { stepTour(0); }
     function stepTour(i) {
