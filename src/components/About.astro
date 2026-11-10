@@ -4,7 +4,7 @@ import SectionHeading from './SectionHeading.astro';
 ---
 <section class="section" id="about" aria-labelledby="about-h">
   <div class="container">
-    <SectionHeading eyebrow="About" title="Production Flutter apps, built with AI, backed by Firebase" subtitle="A practical, product-minded engineer — focused on clean architecture, reliable features, and maintainable code." />
+    <SectionHeading id="about-h" eyebrow="About" title="Production Flutter apps, built with AI, backed by Firebase" subtitle="A practical, product-minded engineer — focused on clean architecture, reliable features, and maintainable code." />
     <div class="grid">
       <div class="bio" data-reveal>{ABOUT_PARAGRAPHS.map((par) => <p>{par}</p>)}</div>
       <aside class="facts" aria-label="At a glance" data-reveal style="--d:120ms">

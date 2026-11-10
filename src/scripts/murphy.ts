@@ -52,11 +52,19 @@ export function initMurphy() {
   };
   const fit = () => {
     if (panel.hidden) return;
+    const viewport = window.visualViewport;
+    const viewportTop = viewport?.offsetTop ?? 0;
+    const viewportHeight = viewport?.height ?? innerHeight;
+    const viewportBottom = viewportTop + viewportHeight;
     const r = bot.getBoundingClientRect();
+    const spaceAbove = r.top - viewportTop - 24;
+    const spaceBelow = viewportBottom - r.bottom - 24;
+    const available = Math.max(spaceAbove, spaceBelow);
+    panel.style.maxHeight = `${Math.max(120, Math.min(viewportHeight - 24, available >= 240 ? available : viewportHeight - 24))}px`;
     const width = panel.offsetWidth, height = panel.offsetHeight;
     const x = Math.max(12, Math.min(r.right - width, innerWidth - width - 12));
     const above = r.top - height - 12;
-    const y = above >= 12 ? above : Math.max(12, Math.min(r.bottom + 12, innerHeight - height - 12));
+    const y = above >= viewportTop + 12 ? Math.min(above, viewportBottom - height - 12) : Math.max(viewportTop + 12, Math.min(r.bottom + 12, viewportBottom - height - 12));
     panel.style.left = `${x}px`; panel.style.top = `${y}px`;
   };
   const clearTour = () => {
@@ -76,7 +84,7 @@ export function initMurphy() {
     } else if (tab === 'care') {
       body.innerHTML = `<h3>A tiny break together.</h3><p class="muted">A snack, a game, or a well-earned nap?</p><div class="stat"><span>Happiness</span><span>${pet.joy}%</span></div><meter min="0" max="100" value="${pet.joy}" aria-label="Happiness">${pet.joy}%</meter><div class="stat"><span>Energy</span><span>${pet.energy}%</span></div><meter min="0" max="100" value="${pet.energy}" aria-label="Energy">${pet.energy}%</meter><div class="actions">${action('feed','🍓 Give a snack')}${action('play','✦ Play together')}${action('pet','♡ Give a pat')}${action('rest','☾ Take a nap')}</div><p class="muted">${pet.snacks} snacks shared · Care is saved on this device.</p><div class="answer" role="status">${escape(message || 'Happy to see you! What shall we do?')}</div>`;
     } else {
-      body.innerHTML = `<h3>Where shall we go?</h3><p class="muted">I know my way around. Let’s find something you’ll love.</p><div class="actions">${action('tour','✦ Take the tour',true)}${action('projects','↗ See projects')}${action('skills','⌘ Explore skills')}${action('contact','↗ Contact Opi')}</div><div class="answer" id="murphy-answer" role="status">${escape(message || 'Ask me about Opi’s skills, projects, experience, or how to get in touch.')}</div><form class="ask"><input aria-label="Ask Murphy about Opi" placeholder="Ask about Opi…" maxlength="240" required autocomplete="off" /><button type="submit" aria-label="Send question">Send ↗</button></form><p class="muted" style="margin-top:8px;margin-bottom:0">Portfolio helper · Answers from this site</p>`;
+      body.innerHTML = `<h3>Where shall we go?</h3><p class="muted">I know my way around. Let’s find something you’ll love.</p><div class="actions">${action('tour','✦ Take the tour',true)}${action('projects','→ See projects')}${action('skills','⌘ Explore skills')}${action('contact','→ Contact Opi')}</div><div class="answer" id="murphy-answer" role="status">${escape(message || 'Ask me about Opi’s skills, projects, experience, or how to get in touch.')}</div><form class="ask"><input aria-label="Ask Murphy about Opi" placeholder="Ask about Opi…" maxlength="240" required autocomplete="off" /><button type="submit" aria-label="Send question">Send →</button></form><p class="muted" style="margin-top:8px;margin-bottom:0">Portfolio helper · Answers from this site</p>`;
     }
     fit();
   };
@@ -121,7 +129,7 @@ export function initMurphy() {
         if (pet.energy < 15) { text = 'I’m a little sleepy. A snack or a nap will help me recharge.'; mood('sad'); }
         else { pet.energy -= 15; pet.joy = Math.min(100,pet.joy+15); text = 'You found my happy dance! Let’s call that a tiny victory.'; mood('excited'); }
       }
-      if (id === 'rest') { pet.energy = 100; text = 'A tiny power nap. Recharged and ready for our next adventure!'; mood('happy'); }
+      if (id === 'rest') { pet.energy = 100; text = 'A tiny power nap. Recharged and ready for our next adventure!'; mood('sleep'); }
       save(); render(text); speak(text);
     }
   });
@@ -163,5 +171,7 @@ export function initMurphy() {
   window.addEventListener('resize', () => { if (guide.style.left) { const r=guide.getBoundingClientRect(); move(r.left,r.top); } fit(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) close(); });
   document.addEventListener('visibilitychange', () => { if (document.hidden) stopVoice(); });
+  window.visualViewport?.addEventListener('resize', fit);
+  window.visualViewport?.addEventListener('scroll', fit);
   new ResizeObserver(fit).observe(panel);
 }

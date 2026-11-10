@@ -7,7 +7,7 @@ const counts: Record<(typeof filters)[number], number> = { All: PROJECTS.length,
 ---
 <section class="section" id="projects">
   <div class="container">
-    <SectionHeading eyebrow="Featured projects" title="Real work, real links" subtitle="19 projects — from production apps and on-device AI to open-source work. Production travel apps link to their store listings; everything else links to GitHub. No invented metrics." />
+    <SectionHeading eyebrow="Featured projects" title="Real work, real links" subtitle={`${PROJECTS.length} projects spanning production mobile apps, on-device AI, open-source packages, and web experiments.`} />
     <div class="filter-row" data-reveal>
       <div class="filters" role="group" aria-label="Filter projects by category">
         {filters.map((f) => <button type="button" data-filter={f} aria-pressed={f === 'All' ? 'true' : 'false'} class={f === 'All' ? 'active' : ''}>{f} <span class="f-count">{counts[f]}</span></button>)}
@@ -43,8 +43,8 @@ const counts: Record<(typeof filters)[number], number> = { All: PROJECTS.length,
 </section>
 <style>
   .filter-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:0.75rem 1rem;margin-bottom:1.25rem}
-  .filters{display:flex;flex-wrap:wrap;gap:0.4rem;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:0.3rem}
-  .filters button{display:inline-flex;align-items:center;gap:0.4rem;padding:0.42rem 0.85rem;border:0;background:transparent;border-radius:999px;cursor:pointer;font-weight:600;font-size:0.86rem;color:var(--text-2);transition:background var(--dur) var(--ease),color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
+  .filters{display:flex;flex-wrap:wrap;gap:0.4rem;background:var(--surface-2);border:1px solid var(--border);border-radius:16px;padding:0.3rem}
+  .filters button{display:inline-flex;align-items:center;gap:0.4rem;min-height:44px;padding:0.42rem 0.85rem;border:0;background:transparent;border-radius:999px;cursor:pointer;font-weight:600;font-size:0.86rem;color:var(--text-2);transition:background var(--dur) var(--ease),color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
   .filters button:hover{color:var(--text)}
   .filters button.active{background:var(--text);color:var(--bg);box-shadow:var(--shadow-sm)}
   .f-count{display:grid;place-items:center;min-width:1.25rem;height:1.25rem;padding:0 0.3rem;border-radius:999px;background:color-mix(in srgb, var(--text) 10%, transparent);font-family:var(--font-mono);font-size:0.68rem;font-weight:600}
@@ -89,21 +89,27 @@ const counts: Record<(typeof filters)[number], number> = { All: PROJECTS.length,
   const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
   const cards = document.querySelectorAll<HTMLElement>('#project-list .proj');
   const count = document.getElementById('project-count');
+  let filterTimer: ReturnType<typeof setTimeout>;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   buttons.forEach((btn) => btn.addEventListener('click', () => {
     const filter = btn.dataset.filter || 'All';
     buttons.forEach((b) => { b.classList.toggle('active', b === btn); b.setAttribute('aria-pressed', String(b === btn)); });
-    let shown = 0;
-    cards.forEach((card) => {
-      const visible = filter === 'All' || card.dataset.category === filter;
-      if (visible) shown++;
-      // Animate out, then swap visibility, then animate in — no layout jump.
-      card.classList.add('is-out');
-      window.setTimeout(() => {
+    clearTimeout(filterTimer);
+    const shown = Array.from(cards).filter(card => filter === 'All' || card.dataset.category === filter).length;
+    const update = () => {
+      cards.forEach(card => {
+        const visible = filter === 'All' || card.dataset.category === filter;
         card.hidden = !visible;
-        card.classList.remove('is-out');
-        if (visible) { card.classList.remove('is-in'); void card.offsetWidth; card.classList.add('is-in'); }
-      }, 140);
-    });
-    if (count) count.textContent = `Showing ${shown} of ${cards.length} projects`;
+        card.classList.remove('is-out', 'is-in');
+        if (visible && !reduced.matches) card.classList.add('is-in');
+      });
+      if (count) count.textContent = `Showing ${shown} of ${cards.length} projects`;
+    };
+    if (reduced.matches) update();
+    else {
+      cards.forEach(card => card.classList.add('is-out'));
+      filterTimer = setTimeout(update, 140);
+    }
+
   }));
 </script>
