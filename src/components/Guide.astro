@@ -1,18 +1,15 @@
 ---
-/* Floating guide mascot "Murphy": a cute anime-style girl who hovers over the
-   whole site, can be dragged anywhere, guides visitors on a tour, and behaves
-   a little like a pet — she has moods (happy, excited, angry, sad, love) with
-   expressive anime faces, mood animations and her own voice clips.
-   Voice clips are stored as base64 text in public/audio/murphy/*.b64 and
-   decoded to audio at runtime — no API keys, no backend, no binary files. */
+// Murphy is a local portfolio companion. No external chat service is required.
 ---
-<div id="guide" class="guide" aria-label="Site guide">
-  <div id="guide-bubble" class="bubble" hidden>
-    <button class="voice-toggle" id="guide-voice" type="button" aria-label="Toggle voice narration" aria-pressed="true">🔊</button>
-    <button class="bubble-close" id="guide-close" type="button" aria-label="Close guide">×</button>
-    <div class="bubble-body" id="guide-body"></div>
-  </div>
-  <button id="guide-bot" class="bot" type="button" data-mood="idle" aria-label="Open site guide" aria-haspopup="dialog">
+<div id="guide" class="guide">
+  <section id="guide-bubble" class="bubble" role="dialog" aria-label="Murphy companion" hidden>
+    <header class="companion-header"><div><span class="eyebrow">YOUR LITTLE SIDEKICK</span><h2>Meet Murphy <span class="online" aria-label="Online"></span></h2></div><button id="guide-close" type="button" aria-label="Close Murphy">×</button></header>
+    <div class="companion-intro"><span class="intro-icon" aria-hidden="true">✦</span><div><strong>A little company. A little curiosity.</strong><p>Explore Opi’s world with me, or stay and play.</p></div></div>
+    <nav class="companion-tabs" aria-label="Companion views"><button type="button" data-tab="explore" aria-pressed="true">↗ Explore</button><button type="button" data-tab="care" aria-pressed="false">♡ Pet care</button></nav>
+    <div id="guide-body" class="bubble-body"></div>
+    <footer class="companion-footer"><button id="guide-voice" type="button" aria-pressed="false">Voice off</button><button id="guide-reset" type="button">Reset position ↗</button></footer>
+  </section>
+  <button id="guide-bot" class="bot" type="button" data-mood="idle" aria-label="Open Murphy companion" aria-expanded="false" aria-controls="guide-bubble" aria-haspopup="dialog">
     <svg viewBox="0 0 140 172" role="img" aria-label="Murphy, the friendly guide">
       <ellipse cx="70" cy="162" rx="34" ry="8" class="m-shadow" />
       <!-- back hair -->
@@ -154,17 +151,10 @@
         <path d="M0 5 C-7 -2 -4 -9 0 -5 C4 -9 7 -2 0 5 Z" class="m-heart h2" transform="translate(108,50) scale(0.8)" />
       </g>
     </svg>
+    <span class="bot-label">Murphy <span>✦</span></span>
   </button>
 </div>
 <style>
-  .guide{position:fixed;right:1.25rem;bottom:5rem;z-index:200;touch-action:none;filter:drop-shadow(0 10px 18px rgba(0,0,0,0.18))}
-  .guide.placed{right:auto;bottom:auto}
-  .guide.dragging{filter:drop-shadow(0 16px 26px rgba(0,0,0,0.25))}
-  .guide.dragging .bot{animation-play-state:paused}
-  .bot{display:block;width:112px;height:auto;background:none;border:0;padding:0;cursor:grab;animation:bob 3.4s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
-  .bot:active{cursor:grabbing}
-  .bot:focus-visible{outline:3px solid var(--accent);outline-offset:4px;border-radius:18px}
-  @keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-9px) rotate(1.5deg)}}
   /* ---- mood animations (pet-like behaviour) ---- */
   .bot[data-mood="happy"]{animation:happyBounce 0.9s ease-in-out infinite}
   @keyframes happyBounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-14px)}60%{transform:translateY(0)}80%{transform:translateY(-6px)}}
@@ -225,262 +215,38 @@
   .m-hearts .m-heart{transform-box:fill-box;animation:heartFloat 1.8s ease-in-out infinite}
   .m-hearts .m-heart.h2{animation-delay:0.6s}
   @keyframes heartFloat{0%{transform:translateY(0);opacity:0}25%{opacity:1}100%{transform:translateY(-26px);opacity:0}}
-  /* Speech bubble */
-  .bubble{position:absolute;bottom:calc(100% + 16px);left:50%;transform:translateX(-50%) translateY(6px);width:max-content;max-width:min(320px,86vw);background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 18px 44px -12px rgba(0,0,0,0.28);padding:2rem 1.1rem 1.05rem;opacity:0;pointer-events:none;transition:opacity 0.22s var(--ease),transform 0.22s var(--ease);color:var(--text)}
-  .bubble.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
-  .bubble::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:9px solid transparent;border-top-color:var(--surface);filter:drop-shadow(0 2px 1px rgba(0,0,0,0.06))}
-  /* Flipped below the mascot when there is no room above (e.g. tour near the top edge). */
-  .bubble.below{bottom:auto;top:calc(100% + 16px)}
-  .bubble.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:var(--surface);filter:drop-shadow(0 -2px 1px rgba(0,0,0,0.06))}
-  .bubble[hidden]{display:none}
-  .bubble-close{position:absolute;top:0.35rem;right:0.55rem;background:none;border:0;font-size:1.25rem;line-height:1;color:var(--text-3);cursor:pointer;padding:0.35rem;min-width:38px;min-height:38px}
-  .bubble-close:hover{color:var(--text)}
-  .voice-toggle{position:absolute;top:0.35rem;left:0.55rem;background:none;border:0;font-size:1.05rem;cursor:pointer;padding:0.35rem;min-width:38px;min-height:38px}
-  .voice-toggle[aria-pressed="false"]{filter:grayscale(1);opacity:0.5}
-  .bubble-body{font-size:0.9rem;line-height:1.55}
-  .bubble-body p{margin:0 0 0.7rem}
-  .bubble-body p:last-child{margin-bottom:0}
-  .bubble-name{font-family:var(--font-display);font-weight:700}
-  .bubble-actions{display:flex;flex-wrap:wrap;gap:0.45rem;margin-top:0.75rem}
-  .bubble-actions button{font:inherit;font-size:0.82rem;font-weight:600;border:1px solid var(--border);background:var(--surface-2);color:var(--text);border-radius:999px;padding:0.5rem 0.9rem;cursor:pointer;min-height:38px;transition:border-color 0.2s var(--ease),transform 0.2s var(--ease)}
-  .bubble-actions button:hover{border-color:var(--accent);transform:translateY(-1px)}
-  .bubble-actions button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-  .mood-label{font-size:0.78rem;color:var(--text-3);margin:0.7rem 0 0.15rem!important}
-  .mood-row{margin-top:0.3rem!important}
-  .mood-row button{font-size:1.25rem;padding:0.35rem 0.55rem;min-width:44px;min-height:44px}
-  .tour-nav{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;margin-top:0.8rem}
-  .tour-nav .step{font-family:var(--font-mono);font-size:0.72rem;color:var(--text-3)}
-  .tour-nav .row{display:flex;gap:0.45rem}
-  /* Section highlight while touring */
-  :global(.guide-highlight){outline:2px dashed var(--accent)!important;outline-offset:10px;border-radius:8px;animation:guidePulse 1.6s ease-in-out infinite}
-  @keyframes guidePulse{0%,100%{outline-color:var(--accent)}50%{outline-color:color-mix(in srgb, var(--accent) 30%, transparent)}}
-  @media (max-width:640px){
-    .guide{right:0.9rem;bottom:4.5rem}
-    .bot{width:84px}
-  }
-  /* Desktop has a 136px fixed side rail at the right edge — keep the mascot clear of it. */
-  @media (min-width:1100px){
-    .guide{right:calc(136px + 1.25rem)}
-  }
-  @media (prefers-reduced-motion: reduce){
-    .bot,.m-hand,.m-bow,.m-anger,.m-sweat,.m-hearts .m-heart,:global(.guide-highlight){animation:none!important}
-    .bubble{transition:none}
-  }
-  @media print{.guide{display:none}}
+
+.guide{position:fixed;right:1.25rem;bottom:4.5rem;z-index:200}
+.bot{display:block;width:94px;border:0;background:none;padding:0;cursor:grab;touch-action:none;color:var(--text);animation:bob 4s ease-in-out infinite}
+.bot svg{width:100%;display:block;filter:drop-shadow(0 8px 12px #0002)}
+.bot-label{display:inline-flex;gap:12px;align-items:center;padding:5px 12px;border:1px solid var(--border);background:var(--surface);border-radius:30px;font:600 11px var(--font-body);box-shadow:var(--shadow-sm)}
+.bot-label span{color:var(--accent)}
+.guide.dragging .bot{animation:none;cursor:grabbing}
+@keyframes bob{50%{transform:translateY(-5px)}}
+.bubble{position:fixed;width:360px;max-width:calc(100vw - 24px);max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;border:1px solid var(--border);border-radius:24px;background:var(--surface);box-shadow:0 24px 80px #0003;color:var(--text);font:14px/1.55 var(--font-body)}
+.bubble[hidden]{display:none}
+.companion-header{display:flex;justify-content:space-between;align-items:center;padding:22px 22px 16px}
+.eyebrow{font:600 9px var(--font-mono);letter-spacing:1.6px;color:var(--text-3)}
+h2{margin:5px 0 0;font:600 24px var(--font-display);letter-spacing:-.8px}.online{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--accent);vertical-align:middle;margin-left:6px;box-shadow:0 0 0 4px var(--accent-soft)}
+.bubble :global(button){font:inherit;color:inherit;cursor:pointer;border:1px solid var(--border);background:var(--surface-2);border-radius:10px;padding:9px 12px;min-height:40px}
+.bubble :global(button:hover){border-color:var(--accent);background:var(--accent-soft)}
+.companion-header button{font-size:22px;background:none;border:0}
+.companion-intro{display:flex;gap:12px;padding:16px 20px;background:var(--accent-soft);border-block:1px solid var(--border)}
+.intro-icon{font-size:28px;color:var(--accent)}.companion-intro strong{font-size:12px}.companion-intro p{margin:4px 0 0;font-size:11px;color:var(--text-2)}
+.companion-tabs{display:flex;margin:16px 20px 0;padding:4px;gap:4px;background:var(--surface-2);border-radius:12px}.companion-tabs button{flex:1;background:none;border:0;font-size:12px}.companion-tabs button[aria-pressed=true]{background:var(--surface);box-shadow:var(--shadow-sm);color:var(--accent)}
+.bubble-body{padding:18px 20px}.bubble-body :global(p){margin:0 0 12px}.bubble-body :global(h3){font:600 18px var(--font-display);margin:0 0 8px}.bubble :global(.muted){color:var(--text-2);font-size:12px}
+.bubble :global(.actions){display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.bubble :global(.actions button){text-align:left;font-size:12px}.bubble :global(button.primary){background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.bubble :global(.answer){border:1px solid var(--border);background:var(--surface-2);border-radius:12px;padding:12px;font-size:12px;margin:12px 0;overflow-wrap:anywhere}.bubble :global(.ask){display:flex;gap:6px}.bubble :global(.ask input){min-width:0;flex:1;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);padding:10px;font:inherit;font-size:12px}.bubble :global(.ask button){font-size:12px}
+.bubble :global(.stat){display:flex;justify-content:space-between;font-size:12px;margin-top:10px}.bubble :global(meter){display:block;width:100%;height:12px;accent-color:var(--accent)}
+.bubble :global(.tour-progress){height:4px;background:var(--border);border-radius:10px;margin-bottom:16px;overflow:hidden}.bubble :global(.tour-progress span){display:block;height:100%;background:var(--accent)}
+.bubble :global(.tour-controls){display:flex;gap:6px;margin-top:16px}.bubble :global(.tour-controls button){font-size:12px}.companion-footer{display:flex;justify-content:space-between;border-top:1px solid var(--border);padding:10px 16px}.companion-footer button{font-size:10px;border:0;background:none;color:var(--text-2)}
+:global(.guide-highlight){outline:2px solid var(--accent);outline-offset:6px;border-radius:12px}
+@media(min-width:1100px){.guide{right:156px}}
+@media(max-width:640px){.bot{width:74px}.guide{right:12px;bottom:70px}.bubble{max-height:calc(100dvh - 24px)}}
+@media(prefers-reduced-motion:reduce){.bot,.bot *{animation:none!important}}
+@media print{.guide{display:none}}
 </style>
 <script>
-  (() => {
-    const guide = document.getElementById('guide');
-    const bot = document.getElementById('guide-bot');
-    const bubble = document.getElementById('guide-bubble');
-    const body = document.getElementById('guide-body');
-    const closeBtn = document.getElementById('guide-close');
-    const voiceBtn = document.getElementById('guide-voice');
-    if (!guide || !bot || !bubble || !body) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const GW = () => guide.offsetWidth, GH = () => guide.offsetHeight;
-
-    /* ---------- voice clips (pre-generated neural voice, Aria) ----------
-       Clips are stored as base64 text (public/audio/murphy/*.b64) so they can
-       live in the repo; decoded to audio at runtime. */
-    const voice = { on: true };
-    try { voice.on = localStorage.getItem('murphy-voice') !== 'off'; } catch (e) {}
-    let clip = null, playToken = 0;
-    const clipCache = {};
-    const stopClip = () => { playToken++; if (clip) { try { clip.pause(); } catch (e) {} clip = null; } };
-    const clipUrl = async (name) => {
-      if (!clipCache[name]) {
-        const res = await fetch('audio/murphy/' + name + '.b64');
-        const bin = atob((await res.text()).replace(/\s+/g, ''));
-        const bytes = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-        clipCache[name] = URL.createObjectURL(new Blob([bytes], { type: 'audio/mpeg' }));
-      }
-      return clipCache[name];
-    };
-    const playClip = async (name) => {
-      const t = ++playToken;
-      stopClip(); playToken = t; // stopClip bumped the token; restore ours
-      if (!voice.on) return;
-      try {
-        const url = await clipUrl(name);
-        if (t !== playToken || !voice.on) return;
-        clip = new Audio(url);
-        clip.play().catch(() => { clip = null; });
-      } catch (e) { clip = null; }
-    };
-    const setVoice = (on) => {
-      voice.on = on;
-      try { localStorage.setItem('murphy-voice', on ? 'on' : 'off'); } catch (e) {}
-      if (voiceBtn) { voiceBtn.setAttribute('aria-pressed', on ? 'true' : 'false'); voiceBtn.textContent = on ? '🔊' : '🔇'; }
-      if (!on) stopClip();
-      else if (tour.i >= 0) playClip('s' + tour.i);
-    };
-    voiceBtn?.addEventListener('click', (e) => { e.stopPropagation(); setVoice(!voice.on); });
-    // Sync the toggle UI without speaking (tour is declared further below).
-    if (voiceBtn) { voiceBtn.setAttribute('aria-pressed', voice.on ? 'true' : 'false'); voiceBtn.textContent = voice.on ? '🔊' : '🔇'; }
-
-    /* ---------- moods: Murphy behaves a little like a pet ---------- */
-    const MOOD_CLIPS = { happy: 'happy', excited: 'excited', angry: 'angry', sad: 'sad', love: 'love' };
-    let moodTimer = null;
-    const setMood = (m, quiet) => {
-      bot.dataset.mood = m;
-      clearTimeout(moodTimer);
-      if (!quiet && MOOD_CLIPS[m]) playClip(MOOD_CLIPS[m]);
-      if (m !== 'idle') moodTimer = setTimeout(() => { bot.dataset.mood = 'idle'; }, 6000);
-    };
-
-    /* ---------- draggable anywhere ---------- */
-    let drag = null;
-    const clamp = (x, y) => {
-      const rail = window.innerWidth >= 1100 ? 144 : 8; // keep clear of the desktop side rail
-      return {
-        x: Math.min(Math.max(x, 8), window.innerWidth - GW() - rail),
-        y: Math.min(Math.max(y, 8), window.innerHeight - GH() - 8),
-      };
-    };
-    const place = (x, y, animate = true) => {
-      const c = clamp(x, y);
-      guide.classList.add('placed');
-      guide.style.transition = animate && !reduced ? 'left 0.45s var(--ease), top 0.45s var(--ease)' : 'none';
-      guide.style.left = c.x + 'px';
-      guide.style.top = c.y + 'px';
-    };
-    const resetPos = () => {
-      guide.classList.remove('placed');
-      guide.style.left = ''; guide.style.top = ''; guide.style.transition = '';
-    };
-    bot.addEventListener('pointerdown', (e) => {
-      const r = guide.getBoundingClientRect();
-      drag = { dx: e.clientX - r.left, dy: e.clientY - r.top, moved: false, sx: e.clientX, sy: e.clientY };
-      guide.classList.add('dragging');
-      guide.style.transition = 'none';
-      bot.setPointerCapture(e.pointerId);
-    });
-    bot.addEventListener('pointermove', (e) => {
-      if (!drag) return;
-      if (Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 7) drag.moved = true;
-      if (drag.moved) place(e.clientX - drag.dx, e.clientY - drag.dy, false);
-    });
-    const endDrag = () => { drag = null; guide.classList.remove('dragging'); };
-    bot.addEventListener('pointerup', (e) => {
-      const wasDrag = drag && drag.moved;
-      endDrag();
-      if (wasDrag) setMood('happy', true); // she likes being carried around
-      else toggleBubble();
-    });
-    bot.addEventListener('pointercancel', endDrag);
-
-    /* ---------- bubble content ---------- */
-    const esc = (s) => s.replace(/</g, '&lt;');
-    /* Keep the bubble inside the viewport: flip below the mascot when there is no room above. */
-    const fitBubble = () => {
-      bubble.classList.remove('below');
-      let r = bubble.getBoundingClientRect();
-      if (r.top < 8) {
-        bubble.classList.add('below');
-        r = bubble.getBoundingClientRect();
-        if (r.bottom > window.innerHeight - 8) bubble.classList.remove('below');
-      }
-    };
-    const showBubble = (html) => { body.innerHTML = html; bubble.hidden = false; requestAnimationFrame(() => { bubble.classList.add('show'); fitBubble(); }); wireActions(); };
-    const hideBubble = () => { stopClip(); bubble.classList.remove('show'); setTimeout(() => { bubble.hidden = true; }, 240); };
-    const toggleBubble = () => {
-      if (!bubble.hidden && bubble.classList.contains('show')) { hideBubble(); return; }
-      if (tour.i >= 0) { showBubble(tourHtml()); playClip('s' + tour.i); return; }
-      showBubble(menuHtml());
-      playClip('menu');
-    };
-    const menuHtml = () => `
-      <p><span class="bubble-name">Hi, I'm Murphy!</span> 💁‍♀️<br>Opi's friendly guide. I can show you around the whole site.</p>
-      <div class="bubble-actions">
-        <button type="button" class="primary" data-act="tour">✨ Take the tour</button>
-        <button type="button" data-act="goto" data-to="#projects">📂 Projects</button>
-        <button type="button" data-act="goto" data-to="#contact">💬 Contact</button>
-        <button type="button" data-act="hide">Maybe later</button>
-      </div>
-      <p class="mood-label">Make Murphy feel:</p>
-      <div class="bubble-actions mood-row">
-        <button type="button" data-act="mood" data-mood="happy" aria-label="Happy">😊</button>
-        <button type="button" data-act="mood" data-mood="excited" aria-label="Excited">🤩</button>
-        <button type="button" data-act="mood" data-mood="angry" aria-label="Angry">😠</button>
-        <button type="button" data-act="mood" data-mood="sad" aria-label="Sad">😢</button>
-        <button type="button" data-act="mood" data-mood="love" aria-label="Love">😍</button>
-        <button type="button" data-act="mood" data-mood="idle" aria-label="Calm">😌</button>
-      </div>`;
-    const tourHtml = () => {
-      const s = TOUR[tour.i];
-      return `
-      <p><span class="bubble-name">${esc(s.title)}</span><br>${esc(s.text)}</p>
-      <div class="tour-nav">
-        <span class="step">${tour.i + 1} / ${TOUR.length}</span>
-        <span class="row">
-          ${tour.i > 0 ? '<button type="button" data-act="back">← Back</button>' : ''}
-          <button type="button" class="primary" data-act="next">${tour.i === TOUR.length - 1 ? 'Finish 🎉' : 'Next →'}</button>
-          <button type="button" data-act="skip">Skip</button>
-        </span>
-      </div>`;
-    };
-    const wireActions = () => {
-      body.querySelectorAll('[data-act]').forEach((b) => {
-        b.addEventListener('click', () => {
-          const act = b.getAttribute('data-act');
-          if (act === 'tour') startTour();
-          else if (act === 'goto') { endTour(true); scrollToSel(b.getAttribute('data-to')); hideBubble(); }
-          else if (act === 'hide') hideBubble();
-          else if (act === 'next') stepTour(tour.i + 1);
-          else if (act === 'back') stepTour(tour.i - 1);
-          else if (act === 'skip') { endTour(); hideBubble(); resetPos(); }
-          else if (act === 'mood') setMood(b.getAttribute('data-mood'));
-        });
-      });
-    };
-    closeBtn?.addEventListener('click', () => { if (tour.i >= 0) { endTour(); resetPos(); } hideBubble(); });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !bubble.hidden) { if (tour.i >= 0) { endTour(); resetPos(); } hideBubble(); }
-    });
-
-    /* ---------- guided tour ---------- */
-    const TOUR = [
-      { sel: '#top', title: 'Welcome! 👋', text: 'This is Fahim Montasir Opi — Flutter developer and agentic AI developer from Dhaka, building production mobile apps.' },
-      { sel: '#about', title: 'About Opi', text: 'A quick intro: clean-architecture Flutter apps on the Play Store and App Store, plus AI agents and Firebase backends.' },
-      { sel: '#skills', title: 'Skills 🛠️', text: 'Tap any group to expand it — 62 skills across mobile, AI, backend, databases, DevOps and travel tech.' },
-      { sel: '#ai', title: 'Agentic AI 🤖', text: 'My favourite part! Opi designs AI agents — planning loops, tool calling and multi-agent orchestration.' },
-      { sel: '#experience', title: 'Experience 💼', text: 'Where Opi has worked — currently Associate Software Engineer at Innovate Solutions.' },
-      { sel: '#projects', title: 'Projects 📂', text: '19 real projects with real links — production travel apps, on-device AI, open-source tools and 3D web toys.' },
-      { sel: '#workflow', title: 'Workflow ⚙️', text: 'How Opi ships: requirements, reusable components, Firebase backends, AI-assisted delivery, testing and polish.' },
-      { sel: '#contact', title: "Say hello! 💬", text: "That's the whole tour! You'll find Opi's email, GitHub and LinkedIn here. Thanks for visiting!" },
-    ];
-    const tour = { i: -1 };
-    const scrollToSel = (sel) => {
-      const el = document.querySelector(sel);
-      if (el) el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
-      return el;
-    };
-    const highlight = (el) => {
-      document.querySelectorAll('.guide-highlight').forEach((n) => n.classList.remove('guide-highlight'));
-      if (el) el.classList.add('guide-highlight');
-    };
-    const placeNear = (el) => {
-      const r = el.getBoundingClientRect();
-      // Keep the narration bubble (max 320px wide, centered on the mascot) clear of the desktop side rail too.
-      const rail = window.innerWidth >= 1100 ? 144 : 0;
-      let x = Math.min(r.right - GW() - 16, window.innerWidth - rail - 170 - GW() / 2);
-      place(x, r.top + 16);
-    };
-    function startTour() { setMood('happy', true); stepTour(0); }
-    function stepTour(i) {
-      if (i >= TOUR.length) { endTour(); resetPos(); setMood('excited', true); showBubble('<p><span class="bubble-name">Tour complete! 🎉</span><br>Hope you enjoyed the walkthrough. Ping Opi from the contact section!</p><div class="bubble-actions"><button type="button" class="primary" data-act="hide">Done</button></div>'); playClip('done'); return; }
-      tour.i = i;
-      const s = TOUR[i];
-      const el = scrollToSel(s.sel);
-      highlight(el);
-      if (el && !reduced) setTimeout(() => placeNear(el), 450); else if (el) placeNear(el);
-      showBubble(tourHtml());
-      playClip('s' + i);
-    }
-    function endTour(silent) { tour.i = -1; highlight(null); if (!silent) resetPos(); }
-
-    window.addEventListener('resize', () => { if (guide.classList.contains('placed')) { const r = guide.getBoundingClientRect(); place(r.left, r.top, false); } });
-  })();
+  import { initMurphy } from '../scripts/murphy';
+  initMurphy();
 </script>
