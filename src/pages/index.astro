@@ -45,7 +45,7 @@ import Footer from '../components/Footer.astro';
         if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); }
       }
     }, { threshold: 0.12, rootMargin: '0px 0px -4% 0px' });
-    document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+    document.querySelectorAll('[data-reveal]').forEach((el) => { el.classList.add('reveal-ready'); io.observe(el); });
   } else {
     document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('in-view'));
   }

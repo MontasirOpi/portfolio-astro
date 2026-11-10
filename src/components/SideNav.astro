@@ -14,6 +14,7 @@ const items = [
   { id: 'ai', label: 'AI' },
   { id: 'experience', label: 'EXPERIENCE' },
   { id: 'projects', label: 'PROJECTS' },
+  { id: 'workflow', label: 'WORKFLOW' },
   { id: 'contact', label: 'CONTACT' },
 ];
 const ticks = [0, 25, 50, 75, 100];
@@ -49,14 +50,14 @@ const ticks = [0, 25, 50, 75, 100];
     .labels { flex: 1; display: flex; align-items: center; justify-content: flex-end; }
     .labels ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.9rem; align-items: flex-end; width: 100%; }
     .labels li { width: 100%; text-align: right; }
-    .label { position: relative; width: 100%; padding: 6px 0; background: none; border: 0; cursor: pointer; font-family: var(--font-display); font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em; color: var(--text-3); text-align: right; white-space: nowrap; transition: color 220ms var(--ease), font-size 220ms var(--ease), opacity 220ms var(--ease), letter-spacing 220ms var(--ease), transform 220ms var(--ease); transform-origin: right center; }
+    .label { position: relative; width: 100%; padding: 6px 0; background: none; border: 0; cursor: pointer; font-family: var(--font-display); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; color: var(--text-3); text-align: right; white-space: nowrap; transition: color 220ms var(--ease), font-size 220ms var(--ease), opacity 220ms var(--ease), letter-spacing 220ms var(--ease), transform 220ms var(--ease); transform-origin: right center; }
     .label::after { content: ""; position: absolute; right: 0; bottom: 2px; width: 0; height: 2px; background: var(--accent); border-radius: 2px; transition: width 220ms var(--ease); }
     /* Dim the rest while one label is hovered — the hovered one pops. */
-    .labels:hover .label { opacity: 0.35; }
+    .labels:hover .label { color: var(--text-2); }
     .labels:hover .label:hover, .labels:hover .label:focus-visible, .labels:hover .label.hover-preview { opacity: 1; }
     .label:hover, .label:focus-visible, .label.hover-preview { color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; transform: translateX(-4px); }
     .label:hover::after, .label:focus-visible::after, .label.hover-preview::after { width: 18px; }
-    .label.passed { opacity: 0.6; }
+    .label.passed { color: var(--text-2); }
     .label.active { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; color: var(--text); opacity: 1; }
     .label.active::after { width: 22px; }
     .label.active.hover-preview, .label.active:hover { color: var(--accent); font-size: 0.78rem; }

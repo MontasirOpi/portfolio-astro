@@ -1,0 +1,45 @@
+<svg class="murphy-avatar" viewBox="0 0 160 176" aria-hidden="true">
+  <defs>
+    <linearGradient id="murphy-shell" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0fff5"/><stop offset="1" stop-color="#a3e7bd"/></linearGradient>
+    <linearGradient id="murphy-screen" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#173d32"/><stop offset="1" stop-color="#0b2721"/></linearGradient>
+  </defs>
+  <ellipse cx="80" cy="163" rx="37" ry="6" fill="#102c2020"/>
+  <g class="robot">
+    <path d="M80 34V23" stroke="#398b60" stroke-width="5" stroke-linecap="round"/>
+    <circle class="antenna" cx="80" cy="17" r="7" fill="#4ade80" stroke="#175c3b" stroke-width="2"/>
+    <path d="M87 22Q104 21 102 8Q88 7 87 22" fill="#15803d"/>
+    <g class="arm arm-left"><path d="M43 112Q24 111 24 128" fill="none" stroke="#4eac79" stroke-width="13" stroke-linecap="round"/><circle cx="24" cy="130" r="9" fill="url(#murphy-shell)" stroke="#3b805a" stroke-width="2"/></g>
+    <g class="arm arm-right"><path d="M117 112Q139 110 136 91" fill="none" stroke="#4eac79" stroke-width="13" stroke-linecap="round"/><rect x="125" y="76" width="22" height="25" rx="10" fill="url(#murphy-shell)" stroke="#3b805a" stroke-width="2"/><path d="M132 79V87M139 79V87" stroke="#3b805a" stroke-width="2" stroke-linecap="round"/></g>
+    <rect x="54" y="139" width="18" height="16" rx="7" fill="#448d65"/><rect x="88" y="139" width="18" height="16" rx="7" fill="#448d65"/>
+    <rect x="45" y="100" width="70" height="47" rx="22" fill="url(#murphy-shell)" stroke="#3b805a" stroke-width="2"/>
+    <rect x="63" y="119" width="34" height="13" rx="6.5" fill="#f2fff7" stroke="#87cda3"/>
+    <path d="M76 125H84M80 121V129" stroke="#15803d" stroke-width="2" stroke-linecap="round"/>
+    <rect x="19" y="57" width="16" height="31" rx="8" fill="#66b98b" stroke="#3b805a" stroke-width="2"/><rect x="125" y="57" width="16" height="31" rx="8" fill="#66b98b" stroke="#3b805a" stroke-width="2"/>
+    <rect x="28" y="33" width="104" height="78" rx="31" fill="url(#murphy-shell)" stroke="#3b805a" stroke-width="2.5"/>
+    <path d="M45 43Q60 37 74 39" stroke="white" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+    <rect x="38" y="47" width="84" height="52" rx="21" fill="url(#murphy-screen)"/>
+    <g class="eyes eyes-normal"><rect class="eye" x="54" y="60" width="11" height="18" rx="5.5" fill="#a5f3c4"/><rect class="eye" x="95" y="60" width="11" height="18" rx="5.5" fill="#a5f3c4"/><circle cx="58" cy="64" r="2" fill="white"/><circle cx="99" cy="64" r="2" fill="white"/></g>
+    <g class="eyes eyes-happy" fill="none" stroke="#a5f3c4" stroke-width="4" stroke-linecap="round"><path d="M53 71Q60 58 67 71M93 71Q100 58 107 71"/></g>
+    <g class="eyes eyes-love" fill="#fda4af"><path d="M60 78L50 67C43 55 58 53 60 62C64 52 78 57 70 68Z"/><path d="M100 78L90 67C83 55 98 53 100 62C104 52 118 57 110 68Z"/></g>
+    <g class="eyes eyes-sleep" fill="none" stroke="#a5f3c4" stroke-width="4" stroke-linecap="round"><path d="M53 71Q60 77 67 71M93 71Q100 77 107 71"/></g>
+    <ellipse cx="49" cy="82" rx="6" ry="3" fill="#fb9baf" opacity=".65"/><ellipse cx="111" cy="82" rx="6" ry="3" fill="#fb9baf" opacity=".65"/>
+    <path class="smile" d="M73 82Q80 90 87 82" fill="none" stroke="#a5f3c4" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g class="sparkles" fill="#15803d"><path d="M17 33L19 39L25 41L19 43L17 49L15 43L9 41L15 39Z"/><path d="M141 32L143 36L147 38L143 40L141 44L139 40L135 38L139 36Z"/></g>
+</svg>
+<style>
+  .murphy-avatar{width:100%;display:block;overflow:visible;filter:drop-shadow(0 6px 8px #15372720)}
+  .eyes-happy,.eyes-love,.eyes-sleep,.sparkles{display:none}
+  .eye{transform-box:fill-box;transform-origin:center;animation:blink 6s infinite}
+  .arm-right{transform-origin:119px 111px;animation:wave 6s ease-in-out infinite}
+  .antenna{animation:glow 3s ease-in-out infinite}
+  :global([data-mood="happy"]) .eyes-normal,:global([data-mood="excited"]) .eyes-normal,:global([data-mood="love"]) .eyes-normal,:global([data-mood="sleep"]) .eyes-normal,:global([data-mood="sad"]) .eyes-normal{display:none}
+  :global([data-mood="happy"]) .eyes-happy,:global([data-mood="excited"]) .eyes-happy,:global([data-mood="love"]) .eyes-love,:global([data-mood="sleep"]) .eyes-sleep,:global([data-mood="sad"]) .eyes-sleep,:global([data-mood="excited"]) .sparkles{display:block}
+  :global([data-mood="excited"]) .robot{animation:dance .7s ease-in-out infinite;transform-origin:80px 140px}
+  :global([data-mood="sleep"]) .arm-right{animation:none}
+  @keyframes blink{0%,43%,47%,100%{transform:scaleY(1)}45%{transform:scaleY(.12)}}
+  @keyframes wave{0%,65%,100%{transform:rotate(0)}72%,85%{transform:rotate(15deg)}78%,91%{transform:rotate(-10deg)}}
+  @keyframes glow{50%{fill:#86efac}}
+  @keyframes dance{25%{transform:rotate(-5deg) translateY(-3px)}75%{transform:rotate(5deg) translateY(-3px)}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>

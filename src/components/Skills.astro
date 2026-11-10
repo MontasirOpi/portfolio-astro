@@ -3,7 +3,7 @@ import { SKILL_GROUPS } from '../data/portfolio';
 import SectionHeading from './SectionHeading.astro';
 import Icon from './Icon.astro';
 
-const iconUrl = (slug: string) => `https://cdn.simpleicons.org/${slug}`;
+const iconUrl = (slug: string) => `/assets/icons/${slug}.svg`;
 const initials = (label: string) =>
   label.replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 const total = SKILL_GROUPS.reduce((n, g) => n + g.items.length, 0);
@@ -68,6 +68,7 @@ const total = SKILL_GROUPS.reduce((n, g) => n + g.items.length, 0);
   .group-head:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .accent-bar{width:4px;align-self:stretch;border-radius:0 4px 4px 0;background:var(--ga);flex:none}
   .g-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--border);flex:none}
+  .g-icon:has(img),.logo:has(img){background:#fff}
   .g-icon img{width:22px;height:22px}
   .g-icon .mono{font-family:var(--font-display);font-weight:700;font-size:0.68rem;color:var(--text);letter-spacing:0.05em}
   .g-text{display:flex;flex-direction:column;gap:0.1rem;flex:1;min-width:0}
@@ -75,17 +76,18 @@ const total = SKILL_GROUPS.reduce((n, g) => n + g.items.length, 0);
   .g-sub{font-family:var(--font-mono);font-size:0.72rem;color:var(--text-3)}
   .chev{flex:none;width:10px;height:10px;border-right:2px solid var(--text-3);border-bottom:2px solid var(--text-3);transform:rotate(45deg) translateY(-2px);transition:transform 0.25s var(--ease)}
   .group.open .chev{transform:rotate(225deg) translateY(-2px)}
-  .group-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.3s var(--ease)}
-  .group.open .group-panel{grid-template-rows:1fr}
+  .groups.enhanced .group-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.3s var(--ease)}
+  .groups.enhanced .group.open .group-panel{grid-template-rows:1fr}
   .panel-inner{overflow:hidden;min-height:0}
   .group-panel ul{list-style:none;margin:0;padding:0 1rem 1rem 4.7rem;display:flex;flex-wrap:wrap;gap:0.4rem}
   .group li{display:inline-flex;align-items:center;gap:0.45rem;border:1px solid var(--border);background:var(--surface-2);border-radius:999px;padding:0.28rem 0.8rem 0.28rem 0.28rem;font-size:0.82rem;color:var(--text-2)}
   .group li[hidden]{display:none}
   .logo{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--surface);box-shadow:inset 0 0 0 1px var(--border);flex:none}
   .logo img{width:15px;height:15px}
-  .logo.mono-sm{font-family:var(--font-mono);font-size:0.55rem;font-weight:700;color:var(--ga)}
+  .logo.mono-sm{font-family:var(--font-mono);font-size:0.55rem;font-weight:700;color:var(--text-2)}
   .no-results{margin:1.5rem 0 0;text-align:center;color:var(--text-3);font-size:0.9rem}
   .no-results[hidden]{display:none}
+  @media(max-width:480px){.group-panel ul{padding-left:1rem}.skill-search{padding-inline:.8rem}.skill-search input{min-height:30px}}
   @media (prefers-reduced-motion: reduce){
     .group,.group-panel,.chev{transition:none}
   }
@@ -105,6 +107,7 @@ const total = SKILL_GROUPS.reduce((n, g) => n + g.items.length, 0);
   const setOpen = (g: (typeof groups)[number], open: boolean) => {
     g.el.classList.toggle('open', open);
     g.head?.setAttribute('aria-expanded', open ? 'true' : 'false');
+    g.el.querySelector<HTMLElement>('.group-panel')!.inert = !open;
   };
   const closeOthers = (keep: (typeof groups)[number]) => groups.forEach((g) => { if (g !== keep) setOpen(g, false); });
   groups.forEach((g) => {
@@ -115,6 +118,8 @@ const total = SKILL_GROUPS.reduce((n, g) => n + g.items.length, 0);
       setOpen(g, willOpen);
     });
   });
+  document.getElementById('skill-groups')?.classList.add('enhanced');
+  groups.forEach(g => setOpen(g, g.el.classList.contains('open')));
   renderCount(totalSkills);
   input?.addEventListener('input', () => {
     const q = input.value.trim().toLowerCase();

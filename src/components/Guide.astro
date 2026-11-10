@@ -1,229 +1,29 @@
 ---
+import MurphyAvatar from './MurphyAvatar.astro';
 // Murphy is a local portfolio companion. No external chat service is required.
 ---
 <div id="guide" class="guide">
   <section id="guide-bubble" class="bubble" role="dialog" aria-label="Murphy companion" hidden>
-    <header class="companion-header"><div><span class="eyebrow">YOUR LITTLE SIDEKICK</span><h2>Meet Murphy <span class="online" aria-label="Online"></span></h2></div><button id="guide-close" type="button" aria-label="Close Murphy">×</button></header>
+    <header class="companion-header"><div><span class="eyebrow">YOUR LITTLE SIDEKICK</span><h2>Meet Murphy <span class="online" aria-hidden="true"></span></h2></div><button id="guide-close" type="button" aria-label="Close Murphy">×</button></header>
     <div class="companion-intro"><span class="intro-icon" aria-hidden="true">✦</span><div><strong>A little company. A little curiosity.</strong><p>Explore Opi’s world with me, or stay and play.</p></div></div>
-    <nav class="companion-tabs" aria-label="Companion views"><button type="button" data-tab="explore" aria-pressed="true">↗ Explore</button><button type="button" data-tab="care" aria-pressed="false">♡ Pet care</button></nav>
+    <nav class="companion-tabs" aria-label="Companion views"><button type="button" data-tab="explore" aria-pressed="true">→ Explore</button><button type="button" data-tab="care" aria-pressed="false">♡ Pet care</button></nav>
     <div id="guide-body" class="bubble-body"></div>
-    <footer class="companion-footer"><button id="guide-voice" type="button" aria-pressed="false">Voice off</button><button id="guide-reset" type="button">Reset position ↗</button></footer>
+    <footer class="companion-footer"><button id="guide-voice" type="button" aria-pressed="false">Voice off</button><button id="guide-reset" type="button">Reset position →</button></footer>
   </section>
   <button id="guide-bot" class="bot" type="button" data-mood="idle" aria-label="Open Murphy companion" aria-expanded="false" aria-controls="guide-bubble" aria-haspopup="dialog">
-    <svg viewBox="0 0 140 172" role="img" aria-label="Murphy, the friendly guide">
-      <ellipse cx="70" cy="162" rx="34" ry="8" class="m-shadow" />
-      <!-- back hair -->
-      <ellipse cx="70" cy="86" rx="46" ry="64" class="m-hair" />
-      <path d="M44 44 C38 66 38 92 42 114" class="m-shine" />
-      <!-- side locks -->
-      <path d="M42 62 C36 92 38 120 46 138 C50 146 60 142 56 132 C50 114 50 90 52 68 Z" class="m-hair" />
-      <path d="M98 62 C104 92 102 120 94 138 C90 146 80 142 84 132 C90 114 90 90 88 68 Z" class="m-hair" />
-      <!-- waving hand -->
-      <g class="m-hand">
-        <circle cx="112" cy="108" r="10" class="m-skin" />
-        <path d="M107 100 l-3 -8 M112 99 l0 -8.5 M117 100 l3 -8" class="m-finger" />
-      </g>
-      <!-- face -->
-      <circle cx="70" cy="74" r="32" class="m-skin" />
-      <!-- bangs -->
-      <path d="M38 70 Q39 42 70 38 Q101 42 102 70 L95 54 L89 70 L81 50 L73 68 L65 48 L57 68 L49 52 L43 68 Z" class="m-hair" />
-      <!-- ahoge -->
-      <path d="M70 38 C70 28 78 26 83 20 C86 17 84 13 80 15" class="m-ahoge" />
-      <!-- bow -->
-      <g class="m-bow" transform="translate(102,42) rotate(18)">
-        <path d="M0 0 L-17 -10 L-15 10 Z" class="m-bowwing" />
-        <path d="M0 0 L17 -10 L15 10 Z" class="m-bowwing" />
-        <path d="M-3 5 L-9 22 L0 19 Z" class="m-bowtail" />
-        <path d="M3 5 L9 22 L0 19 Z" class="m-bowtail" />
-        <circle cx="0" cy="0" r="5.5" class="m-bowknot" />
-      </g>
-
-      <!-- ============ FACES (one per mood) ============ -->
-      <g class="m-face m-face-idle">
-        <path d="M44 80 Q56 71 68 80" class="m-lashline" />
-        <path d="M72 80 Q84 71 96 80" class="m-lashline" />
-        <ellipse cx="56" cy="88" rx="10" ry="13" class="m-eyewhite" />
-        <ellipse cx="84" cy="88" rx="10" ry="13" class="m-eyewhite" />
-        <circle cx="56" cy="89" r="7" class="m-iris" />
-        <circle cx="84" cy="89" r="7" class="m-iris" />
-        <circle cx="56" cy="89" r="3.6" class="m-pupil" />
-        <circle cx="84" cy="89" r="3.6" class="m-pupil" />
-        <circle cx="53.5" cy="85.5" r="2.8" class="m-spark" />
-        <circle cx="81.5" cy="85.5" r="2.8" class="m-spark" />
-        <circle cx="58.5" cy="91.5" r="1.3" class="m-spark" />
-        <circle cx="86.5" cy="91.5" r="1.3" class="m-spark" />
-        <path d="M47 66 Q56 63 65 66" class="m-brow" />
-        <path d="M75 66 Q84 63 93 66" class="m-brow" />
-        <path d="M62 110 Q70 116 78 110" class="m-mouth" />
-        <ellipse cx="46" cy="100" rx="6.5" ry="4" class="m-blush" opacity="0.5" />
-        <ellipse cx="94" cy="100" rx="6.5" ry="4" class="m-blush" opacity="0.5" />
-      </g>
-
-      <g class="m-face m-face-happy">
-        <path d="M46 90 Q56 80 66 90" class="m-happyearc" />
-        <path d="M74 90 Q84 80 94 90" class="m-happyearc" />
-        <path d="M47 63 Q56 60 65 63" class="m-brow" />
-        <path d="M75 63 Q84 60 93 63" class="m-brow" />
-        <path d="M60 106 Q70 122 80 106 Q70 111 60 106 Z" class="m-mouthopen" />
-        <ellipse cx="70" cy="114" rx="4" ry="2.6" class="m-tongue" />
-        <ellipse cx="46" cy="100" rx="6.5" ry="4" class="m-blush" opacity="0.75" />
-        <ellipse cx="94" cy="100" rx="6.5" ry="4" class="m-blush" opacity="0.75" />
-      </g>
-
-      <g class="m-face m-face-excited">
-        <path d="M44 78 Q56 69 68 78" class="m-lashline" />
-        <path d="M72 78 Q84 69 96 78" class="m-lashline" />
-        <ellipse cx="56" cy="88" rx="10.5" ry="15" class="m-eyewhite" />
-        <ellipse cx="84" cy="88" rx="10.5" ry="15" class="m-eyewhite" />
-        <circle cx="56" cy="89" r="7.5" class="m-iris" />
-        <circle cx="84" cy="89" r="7.5" class="m-iris" />
-        <circle cx="56" cy="89" r="4" class="m-pupil" />
-        <circle cx="84" cy="89" r="4" class="m-pupil" />
-        <circle cx="53" cy="85" r="3.2" class="m-spark" />
-        <circle cx="81" cy="85" r="3.2" class="m-spark" />
-        <path d="M40 70 l1.8 4.6 4.6 1.8 -4.6 1.8 -1.8 4.6 -1.8 -4.6 -4.6 -1.8 4.6 -1.8 Z" class="m-star" />
-        <path d="M100 70 l1.8 4.6 4.6 1.8 -4.6 1.8 -1.8 4.6 -1.8 -4.6 -4.6 -1.8 4.6 -1.8 Z" class="m-star" />
-        <path d="M47 61 Q56 58 65 61" class="m-brow" />
-        <path d="M75 61 Q84 58 93 61" class="m-brow" />
-        <path d="M58 104 Q70 128 82 104 Q70 110 58 104 Z" class="m-mouthopen" />
-        <ellipse cx="70" cy="116" rx="5" ry="3.2" class="m-tongue" />
-        <ellipse cx="46" cy="100" rx="6.5" ry="4" class="m-blush" opacity="0.8" />
-        <ellipse cx="94" cy="100" rx="6.5" ry="4" class="m-blush" opacity="0.8" />
-      </g>
-
-      <g class="m-face m-face-angry">
-        <path d="M46 64 L66 72" class="m-angrybrow" />
-        <path d="M94 64 L74 72" class="m-angrybrow" />
-        <ellipse cx="56" cy="90" rx="9" ry="7.5" class="m-eyewhite" />
-        <ellipse cx="84" cy="90" rx="9" ry="7.5" class="m-eyewhite" />
-        <circle cx="56" cy="91" r="5.5" class="m-iris" />
-        <circle cx="84" cy="91" r="5.5" class="m-iris" />
-        <circle cx="56" cy="91" r="3" class="m-pupil" />
-        <circle cx="84" cy="91" r="3" class="m-pupil" />
-        <path d="M47 83 Q56 81 65 84" class="m-lidline" />
-        <path d="M75 84 Q84 81 93 83" class="m-lidline" />
-        <path d="M62 114 Q70 108 78 114" class="m-frown" />
-        <ellipse cx="46" cy="100" rx="6" ry="3.6" class="m-blush" opacity="0.3" />
-        <ellipse cx="94" cy="100" rx="6" ry="3.6" class="m-blush" opacity="0.3" />
-      </g>
-
-      <g class="m-face m-face-sad">
-        <path d="M47 66 L65 60" class="m-sadbrow" />
-        <path d="M93 66 L75 60" class="m-sadbrow" />
-        <ellipse cx="56" cy="90" rx="8.5" ry="11" class="m-eyewhite" />
-        <ellipse cx="84" cy="90" rx="8.5" ry="11" class="m-eyewhite" />
-        <circle cx="56" cy="94" r="5" class="m-iris" />
-        <circle cx="84" cy="94" r="5" class="m-iris" />
-        <circle cx="56" cy="94" r="2.8" class="m-pupil" />
-        <circle cx="84" cy="94" r="2.8" class="m-pupil" />
-        <circle cx="54" cy="91" r="1.6" class="m-spark" />
-        <circle cx="82" cy="91" r="1.6" class="m-spark" />
-        <path d="M64 114 Q70 110 76 114" class="m-frown" />
-        <ellipse cx="46" cy="100" rx="6" ry="3.6" class="m-blush" opacity="0.3" />
-        <ellipse cx="94" cy="100" rx="6" ry="3.6" class="m-blush" opacity="0.3" />
-      </g>
-
-      <g class="m-face m-face-love">
-        <path d="M44 80 Q56 71 68 80" class="m-lashline" />
-        <path d="M72 80 Q84 71 96 80" class="m-lashline" />
-        <ellipse cx="56" cy="88" rx="10" ry="13" class="m-eyewhite" />
-        <ellipse cx="84" cy="88" rx="10" ry="13" class="m-eyewhite" />
-        <path d="M56 94 C50 88 51 82 56 85 C61 82 62 88 56 94 Z" class="m-heartpupil" />
-        <path d="M84 94 C78 88 79 82 84 85 C89 82 90 88 84 94 Z" class="m-heartpupil" />
-        <circle cx="53.5" cy="85.5" r="2" class="m-spark" />
-        <circle cx="81.5" cy="85.5" r="2" class="m-spark" />
-        <path d="M47 66 Q56 63 65 66" class="m-brow" />
-        <path d="M75 66 Q84 63 93 66" class="m-brow" />
-        <path d="M62 109 Q66 114 70 109 Q74 114 78 109" class="m-catmouth" />
-        <ellipse cx="46" cy="100" rx="7.5" ry="4.5" class="m-blush" opacity="0.85" />
-        <ellipse cx="94" cy="100" rx="7.5" ry="4.5" class="m-blush" opacity="0.85" />
-      </g>
-
-      <!-- ============ MOOD EXTRAS ============ -->
-      <g class="m-extra m-anger" transform="translate(110,58)">
-        <path d="M0 -11 L3 -3 L11 0 L3 3 L0 11 L-3 3 L-11 0 L-3 -3 Z" class="m-angermark" />
-      </g>
-      <g class="m-extra m-sweat" transform="translate(112,94)">
-        <path d="M0 -9 C6 -1 7 5 0 9 C-7 5 -6 -1 0 -9 Z" class="m-sweatdrop" />
-      </g>
-      <g class="m-extra m-hearts">
-        <path d="M0 5 C-7 -2 -4 -9 0 -5 C4 -9 7 -2 0 5 Z" class="m-heart h1" transform="translate(32,58)" />
-        <path d="M0 5 C-7 -2 -4 -9 0 -5 C4 -9 7 -2 0 5 Z" class="m-heart h2" transform="translate(108,50) scale(0.8)" />
-      </g>
-    </svg>
+    <MurphyAvatar />
     <span class="bot-label">Murphy <span>✦</span></span>
   </button>
 </div>
 <style>
-  /* ---- mood animations (pet-like behaviour) ---- */
-  .bot[data-mood="happy"]{animation:happyBounce 0.9s ease-in-out infinite}
-  @keyframes happyBounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-14px)}60%{transform:translateY(0)}80%{transform:translateY(-6px)}}
-  .bot[data-mood="excited"]{animation:excitedBob 0.8s ease-in-out infinite}
-  @keyframes excitedBob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.04)}}
-  .bot[data-mood="angry"]{animation:angryShake 0.45s ease-in-out infinite}
-  @keyframes angryShake{0%,100%{transform:translateX(0) rotate(-1deg)}25%{transform:translateX(-4px) rotate(1deg)}75%{transform:translateX(4px) rotate(-1deg)}}
-  .bot[data-mood="sad"]{animation:sadDroop 3s ease-in-out infinite}
-  @keyframes sadDroop{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
-  .bot[data-mood="love"]{animation:loveSway 2.2s ease-in-out infinite}
-  @keyframes loveSway{0%,100%{transform:rotate(-3deg) translateY(0)}50%{transform:rotate(3deg) translateY(-6px)}}
-  /* ---- faces: only the active mood's face shows ---- */
-  .m-face{display:none}
-  .bot[data-mood="idle"] .m-face-idle,.bot[data-mood="happy"] .m-face-happy,.bot[data-mood="excited"] .m-face-excited,.bot[data-mood="angry"] .m-face-angry,.bot[data-mood="sad"] .m-face-sad,.bot[data-mood="love"] .m-face-love{display:block}
-  .m-extra{display:none}
-  .bot[data-mood="angry"] .m-anger{display:block}
-  .bot[data-mood="sad"] .m-sweat{display:block}
-  .bot[data-mood="love"] .m-hearts{display:block}
-  /* ---- art ---- */
-  .m-shadow{fill:rgba(0,0,0,0.12)}
-  .m-hair{fill:#5a3a26}
-  .m-shine{stroke:#8a5f36;stroke-width:6;stroke-linecap:round;fill:none;opacity:0.45}
-  .m-ahoge{stroke:#5a3a26;stroke-width:3.5;stroke-linecap:round;fill:none}
-  .m-skin{fill:#ffe0c2}
-  .m-finger{stroke:#eab68c;stroke-width:2.4;stroke-linecap:round;fill:none}
-  .m-hand{transform-box:fill-box;transform-origin:50% 88%;animation:wave 3.2s ease-in-out infinite}
-  @keyframes wave{0%,100%{transform:rotate(0deg)}12%{transform:rotate(-26deg)}24%{transform:rotate(12deg)}36%{transform:rotate(-18deg)}48%,100%{transform:rotate(0deg)}}
-  .m-bowwing{fill:var(--accent)}
-  .m-bowtail{fill:color-mix(in srgb, var(--accent) 70%, #1c2330)}
-  .m-bowknot{fill:color-mix(in srgb, var(--accent) 70%, #1c2330)}
-  .m-bow{transform-box:fill-box;transform-origin:center;animation:bowSway 3.4s ease-in-out infinite}
-  @keyframes bowSway{0%,100%{transform:translate(102px,42px) rotate(18deg)}50%{transform:translate(102px,42px) rotate(10deg)}}
-  .m-eyewhite{fill:#fff}
-  .m-iris{fill:#9a6230}
-  .m-pupil{fill:#2a1c10}
-  .m-spark{fill:#fff}
-  .m-star{fill:#fff;opacity:0.95}
-  .m-heartpupil{fill:#ff5a7a}
-  .m-lashline{stroke:#2a1c10;stroke-width:4.5;stroke-linecap:round;fill:none}
-  .m-lidline{stroke:#2a1c10;stroke-width:3.5;stroke-linecap:round;fill:none}
-  .m-happyearc{stroke:#2a1c10;stroke-width:4.5;stroke-linecap:round;fill:none}
-  .m-brow{stroke:#5a3a26;stroke-width:2.5;stroke-linecap:round;fill:none}
-  .m-angrybrow{stroke:#5a3a26;stroke-width:4;stroke-linecap:round;fill:none}
-  .m-sadbrow{stroke:#5a3a26;stroke-width:3;stroke-linecap:round;fill:none}
-  .m-mouth{stroke:#b05252;stroke-width:2.5;stroke-linecap:round;fill:none}
-  .m-mouthopen{fill:#b05252}
-  .m-tongue{fill:#f09797}
-  .m-frown{stroke:#b05252;stroke-width:2.5;stroke-linecap:round;fill:none}
-  .m-catmouth{stroke:#b05252;stroke-width:2.5;stroke-linecap:round;fill:none}
-  .m-blush{fill:#ff9db1}
-  .m-angermark{fill:#ff5252;stroke:#d32f2f;stroke-width:1}
-  .m-anger{transform-box:fill-box;transform-origin:center;animation:angerPulse 0.6s ease-in-out infinite}
-  @keyframes angerPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
-  .m-sweatdrop{fill:#8fd3ff;stroke:#5aa9e6;stroke-width:1}
-  .m-sweat{transform-box:fill-box;transform-origin:center;animation:sweatWobble 1.6s ease-in-out infinite}
-  @keyframes sweatWobble{0%,100%{transform:translate(112px,94px) rotate(-6deg)}50%{transform:translate(112px,94px) rotate(6deg)}}
-  .m-heart{fill:#ff6b9d}
-  .m-hearts .m-heart{transform-box:fill-box;animation:heartFloat 1.8s ease-in-out infinite}
-  .m-hearts .m-heart.h2{animation-delay:0.6s}
-  @keyframes heartFloat{0%{transform:translateY(0);opacity:0}25%{opacity:1}100%{transform:translateY(-26px);opacity:0}}
-
 .guide{position:fixed;right:1.25rem;bottom:4.5rem;z-index:200}
-.bot{display:block;width:94px;border:0;background:none;padding:0;cursor:grab;touch-action:none;color:var(--text);animation:bob 4s ease-in-out infinite}
-.bot svg{width:100%;display:block;filter:drop-shadow(0 8px 12px #0002)}
+.bot{position:relative;z-index:1;display:block;width:104px;border:0;background:none;padding:0;cursor:grab;touch-action:none;color:var(--text)}
+.bot :global(svg){animation:bob 4s ease-in-out infinite;width:100%;display:block;filter:drop-shadow(0 8px 12px #0002)}
 .bot-label{display:inline-flex;gap:12px;align-items:center;padding:5px 12px;border:1px solid var(--border);background:var(--surface);border-radius:30px;font:600 11px var(--font-body);box-shadow:var(--shadow-sm)}
 .bot-label span{color:var(--accent)}
-.guide.dragging .bot{animation:none;cursor:grabbing}
+.guide.dragging .bot{cursor:grabbing}.guide.dragging .bot :global(svg){animation:none}
 @keyframes bob{50%{transform:translateY(-5px)}}
-.bubble{position:fixed;width:360px;max-width:calc(100vw - 24px);max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;border:1px solid var(--border);border-radius:24px;background:var(--surface);box-shadow:0 24px 80px #0003;color:var(--text);font:14px/1.55 var(--font-body)}
+.bubble{position:fixed;z-index:2;width:360px;max-width:calc(100vw - 24px);max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain;border:1px solid var(--border);border-radius:24px;background:var(--surface);box-shadow:0 24px 80px #0003;color:var(--text);font:14px/1.55 var(--font-body)}
 .bubble[hidden]{display:none}
 .companion-header{display:flex;justify-content:space-between;align-items:center;padding:22px 22px 16px}
 .eyebrow{font:600 9px var(--font-mono);letter-spacing:1.6px;color:var(--text-3)}
@@ -242,7 +42,7 @@ h2{margin:5px 0 0;font:600 24px var(--font-display);letter-spacing:-.8px}.online
 .bubble :global(.tour-controls){display:flex;gap:6px;margin-top:16px}.bubble :global(.tour-controls button){font-size:12px}.companion-footer{display:flex;justify-content:space-between;border-top:1px solid var(--border);padding:10px 16px}.companion-footer button{font-size:10px;border:0;background:none;color:var(--text-2)}
 :global(.guide-highlight){outline:2px solid var(--accent);outline-offset:6px;border-radius:12px}
 @media(min-width:1100px){.guide{right:156px}}
-@media(max-width:640px){.bot{width:74px}.guide{right:12px;bottom:70px}.bubble{max-height:calc(100dvh - 24px)}}
+@media(max-width:640px){.bot{width:82px}.guide{right:12px;bottom:70px}.bubble{max-height:calc(100dvh - 24px)}}
 @media(prefers-reduced-motion:reduce){.bot,.bot *{animation:none!important}}
 @media print{.guide{display:none}}
 </style>

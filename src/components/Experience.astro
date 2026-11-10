@@ -13,18 +13,18 @@ import SectionHeading from './SectionHeading.astro';
   article{display:grid;gap:0.5rem}
   @media(min-width:800px){article{grid-template-columns:180px 1fr;gap:2rem}}
   .dates{font-family:var(--font-mono);font-size:0.85rem;color:var(--text-3);padding-top:0.3rem;display:flex;flex-direction:column;align-items:flex-start;gap:0.5rem}
-  .badge{display:inline-block;padding:0.2rem 0.55rem;border-radius:999px;background:var(--accent-soft);border:1px solid var(--accent);color:var(--accent);font-family:var(--font-body);font-size:0.72rem;font-weight:700;letter-spacing:0.02em}
+  .badge{display:inline-block;padding:0.2rem 0.55rem;border-radius:999px;background:var(--accent-soft);border:1px solid var(--accent);color:var(--accent-strong);font-family:var(--font-body);font-size:0.72rem;font-weight:700;letter-spacing:0.02em}
   .content{position:relative;border-left:2px solid var(--border);padding-left:1.5rem;transition:border-color 0.3s var(--ease)}
   /* Timeline dot sits centred on the left border line. */
   .content::before{content:"";position:absolute;left:-5px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 15%,transparent)}
   .content:hover{border-left-color:var(--accent)}
   h3{margin:0;font-family:var(--font-display);font-size:1.3rem}
-  .company{margin:0.2rem 0 0.9rem;color:var(--accent);font-weight:600}
+  .company{margin:0.2rem 0 0.9rem;color:var(--accent-strong);font-weight:600}
   ul{margin:0 0 1rem;padding-left:1.15rem;color:var(--text-2)}
   li{margin-bottom:0.35rem}
   .chips{display:flex;flex-wrap:wrap;gap:0.4rem}
   .chips .chip{transition:background var(--dur) var(--ease),border-color var(--dur) var(--ease),color var(--dur) var(--ease),transform var(--dur) var(--ease)}
-  .chips .chip:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--text);transform:translateY(-1px)}
+  .chips .chip:hover{background:var(--accent-soft);border-color:var(--accent-strong);color:var(--text);transform:translateY(-1px)}
   @media (prefers-reduced-motion: reduce){
     .content,.chips .chip{transition:none}
     .chips .chip:hover{transform:none}
